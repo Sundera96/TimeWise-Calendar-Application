@@ -1,0 +1,23 @@
+.CenterPanel {
+  /* Fills remaining space between left and right panels */
+  flex: 1; /* Flexbox approach */
+  /* OR */
+  height: 90vh; /* Sets height to 100% of viewport height */
+  grid-gap: 0.2px; /* Spacing between days */
+}
+
+.CenterPanel h2 {
+  text-align: center;
+}
+
+.Calendar {
+  display: grid; /* Grid layout for calendar */
+  height: 100%;
+  grid-template-columns: repeat(7, 1fr); /* 7 columns for days */
+}
+
+.day {
+  text-align: center;
+  border: 0.5px solid #ddd; /* Lighter border */
+  box-sizing: border-box; /* Includes border in the height calculation */
+}
