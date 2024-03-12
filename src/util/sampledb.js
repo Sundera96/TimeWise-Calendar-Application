@@ -8,6 +8,14 @@ export default function getViewEvents() {
     link: "This is the Http Link for Reminder",
   };
 
+  let rObj2 = {
+    tag: "REMINDER2",
+    tag: "Default",
+    title: "My Second Reminder",
+    remindDateTime: "08/03/2024 06:45:00",
+    link: "This is the Http Link for Reminder",
+  };
+
   let mObj1 = {
     tag: "MEETING",
     tag: "Default",
@@ -28,5 +36,6 @@ export default function getViewEvents() {
   listOfEvents.push(rObj1);
   listOfEvents.push(mObj1);
   listOfEvents.push(tObj1);
+  listOfEvents.push(rObj2);
   return listOfEvents;
 }

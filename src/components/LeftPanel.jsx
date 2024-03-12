@@ -1,9 +1,11 @@
-import '../css/leftPanel.css';
+import "../css/leftPanel.css";
 
-export default function LeftPanel(){
-    return(<>
-        <div className="LeftPanel">
-            <p >Left Panel</p>
-        </div>
-    </>)
+export default function LeftPanel() {
+  return (
+    <>
+      <div className="LeftPanel">
+        <p>Left Panel</p>
+      </div>
+    </>
+  );
 }

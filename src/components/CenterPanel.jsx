@@ -1,54 +1,84 @@
+import MonthPanel from "./MonthPanel.jsx";
+import WeekPanel from "./WeekPanel.jsx";
+import NavigationButton from "./NavigationButton.jsx";
 import "../css/centerPanel.css";
-import Day from "../components/Day.jsx";
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
+import ToggleButton from "./ToggleButton.jsx";
+
 export default function CenterPanel() {
-  const [currentDate, setCurrentDate] = useState(new Date());
-  const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth());
+  const [currDate, setCurrDate] = useState(new Date());
+  const [isMonthView, setIsMonthView] = useState(true);
 
-  useEffect(() => {
-    // Update the calendar at the beginning of each month
-    const intervalId = setInterval(() => {
-      const now = new Date();
-      if (now.getMonth() !== currentMonth) {
-        setCurrentDate(now);
-        setCurrentMonth(now.getMonth());
-      }
-    }, 60000); // Check every minute for month change
-
-    return () => clearInterval(intervalId); // Clear interval on component unmount
-  }, [currentMonth]);
-
-  const generateCalendar = () => {
-    const days = [];
-    const firstDayOfMonth = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth(),
-      1
-    );
-    const startingDay = firstDayOfMonth.getDay();
-    let key = 0;
-    for (let i = 0; i < startingDay; i++) {
-      days.push(<Day key={key++} className="day empty"></Day>);
+  function handleNextClick() {
+    if (isMonthView) {
+      setCurrDate((prevDate) => {
+        const date = new Date();
+        date.setFullYear(prevDate.getFullYear());
+        date.setDate(1);
+        date.setMonth(prevDate.getMonth() + 1);
+        return date;
+      });
+    } else {
+      setCurrDate((prevDate) => {
+        const date = new Date();
+        date.setFullYear(prevDate.getFullYear());
+        date.setMonth(prevDate.getMonth());
+        date.setDate(prevDate.getDate() + 7);
+        return date;
+      });
     }
+  }
 
-    for (
-      let i = 1;
-      i <=
-      new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth() + 1,
-        0
-      ).getDate();
-      i++
-    ) {
-      days.push(<Day cellValue={i} key={key++} className="day" />);
+  function handlePrevClick() {
+    if (isMonthView) {
+      setCurrDate((prevDate) => {
+        const date = new Date();
+        date.setFullYear(prevDate.getFullYear());
+        date.setDate(1);
+        date.setMonth(prevDate.getMonth() - 1);
+        return date;
+      });
+    } else {
+      setCurrDate((prevDate) => {
+        const date = new Date();
+        date.setFullYear(prevDate.getFullYear());
+        date.setMonth(prevDate.getMonth());
+        date.setDate(prevDate.getDate() - 7);
+        return date;
+      });
     }
-    return days;
+  }
+
+  function handleTodayClick() {
+    setCurrDate(new Date());
+  }
+
+  const handleToggleClick = () => {
+    setIsMonthView(!isMonthView);
   };
-
+  const formattedDate = currDate.toLocaleDateString("en-US", {
+    month: "long",
+    year: "numeric",
+  });
   return (
-    <div className="CenterPanel">
-      <div className="Calendar">{generateCalendar()}</div>
+    <div className="centerPanel">
+      <div className="calendarNavigation">
+        <div>
+          <NavigationButton name="Previous" onClick={handlePrevClick} />
+          <NavigationButton name="Next" onClick={handleNextClick} />
+          <NavigationButton name="Today" onClick={handleTodayClick} />
+        </div>
+        <h1 className="formattedDate">{formattedDate}</h1>
+        <div>
+          <ToggleButton
+            onClick={handleToggleClick}
+            isActive={isMonthView}
+          ></ToggleButton>
+        </div>
+      </div>
+
+      {isMonthView && <MonthPanel selectedDate={currDate} />}
+      {!isMonthView && <WeekPanel selectedDate={currDate} />}
     </div>
   );
 }

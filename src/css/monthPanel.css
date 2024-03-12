@@ -1,0 +1,15 @@
+.Calendar {
+  display: grid; /* Grid layout for calendar */
+  height: 100%;
+  grid-template-columns: repeat(7, 1fr); /* 7 columns for days */
+}
+
+.day {
+  text-align: center;
+  border: 0.5px solid #999999; /* Lighter border */
+  box-sizing: border-box; /* Includes border in the height calculation */
+}
+
+.day.empty {
+  background-color: rgb(44, 96, 59);
+}
