@@ -1,10 +1,9 @@
 import MonthPanel from "./MonthPanel.jsx";
 import WeekPanel from "./WeekPanel.jsx";
 import NavigationButton from "./NavigationButton.jsx";
-import "../css/centerPanel.css";
 import { useState } from "react";
 import ToggleButton from "./ToggleButton.jsx";
-
+import "../css/centerPanel.css";
 export default function CenterPanel() {
   const [currDate, setCurrDate] = useState(new Date());
   const [isMonthView, setIsMonthView] = useState(true);

@@ -1,8 +1,6 @@
 .CenterPanel {
   /* Fills remaining space between left and right panels */
-
   grid-column: 2; /* Place center panel in the second and third columns */
-
   /* OR */
   height: 90vh; /* Sets height to 100% of viewport height */
 }

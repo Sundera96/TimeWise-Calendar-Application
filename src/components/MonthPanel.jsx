@@ -1,7 +1,9 @@
-import "../css/monthPanel.css";
 import Day from "../components/Day.jsx";
-import React, { useEffect } from "react";
-export default function CenterPanel({ selectedDate }) {
+import React, { useEffect, useContext } from "react";
+import { EventsContext } from "../store/events-view-context.jsx";
+import "../css/monthPanel.css";
+export default function MonthPanel({ selectedDate }) {
+  const eventsContext = useContext(EventsContext);
   // const [currentDate, setCurrentDate] = useState(new Date());
   // const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth());
   // const [currMonthItems, setCurrMonthItems] = useState([]);
@@ -44,7 +46,24 @@ export default function CenterPanel({ selectedDate }) {
       ).getDate();
       i++
     ) {
-      days.push(<Day cellValue={i} key={key++} className="day" />);
+      const reminders = eventsContext.reminder.filter((rem) => {
+        return new Date(rem.remindDateTime).getDate() == i;
+      });
+      const meetings = eventsContext.meeting.filter((meeting) => {
+        return new Date(meeting.meetingStartDateTime).getDate() == i;
+      });
+      const tasks = eventsContext.task.filter((task) => {
+        return new Date(task.taskDate).getDate() == i;
+      });
+
+      const eventObj = {
+        reminders: reminders,
+        meetings: meetings,
+        tasks: tasks,
+      };
+      days.push(
+        <Day cellValue={i} eventValues={eventObj} key={key++} className="day" />
+      );
     }
     return days;
   };
