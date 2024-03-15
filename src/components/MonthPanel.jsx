@@ -1,47 +1,61 @@
 import Day from "../components/Day.jsx";
-import React, { useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { EventsContext } from "../store/events-view-context.jsx";
 import "../css/monthPanel.css";
-export default function MonthPanel({ selectedDate }) {
+
+const week = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+export default function MonthPanel({ selectedDate, view }) {
   const eventsContext = useContext(EventsContext);
-  // const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentDate, setCurrentDate] = useState(new Date());
   // const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth());
   // const [currMonthItems, setCurrMonthItems] = useState([]);
 
   useEffect(() => {
-    // Update the calendar at the beginning of each month
-    // const intervalId = setInterval(() => {
-    //   const now = new Date();
-    //   if (now.getMonth() !== currentMonth) {
-    //     setCurrentDate(now);
-    //     setCurrentMonth(now.getMonth());
-    //   }
-    // }, 60000); // Check every minute for month change
-    // return () => clearInterval(intervalId); // Clear interval on component unmount
+    //Update the calendar at the beginning of each month
+    const intervalId = setInterval(() => {
+      const now = new Date();
+      if (now.getDate() !== currentDate.getDate()) {
+        setCurrentDate(now);
+      }
+    }, 60000); // Check every minute for month change
+    return () => clearInterval(intervalId); // Clear interval on component unmount
     /**
      * If current month changes execute data fetch
      */
-  }, [selectedDate]);
+  }, []);
+
+  function handleClickOfDayCell(date) {
+    selectedDate.setCurrDate((prev) => {
+      return new Date(prev.setDate(date));
+    });
+    view(false);
+  }
 
   const generateCalendar = () => {
     const days = [];
     const firstDayOfMonth = new Date(
-      selectedDate.getFullYear(),
-      selectedDate.getMonth(),
+      selectedDate.date.getFullYear(),
+      selectedDate.date.getMonth(),
       1
     );
     const startingDay = firstDayOfMonth.getDay();
     let key = 0;
     for (let i = 0; i < startingDay; i++) {
-      days.push(<Day key={key++} className="day empty"></Day>);
+      days.push(
+        <Day
+          key={key++}
+          day={key < 7 ? week[key] : ""}
+          className="day empty"
+        ></Day>
+      );
     }
 
     for (
       let i = 1;
       i <=
       new Date(
-        selectedDate.getFullYear(),
-        selectedDate.getMonth() + 1,
+        selectedDate.date.getFullYear(),
+        selectedDate.date.getMonth() + 1,
         0
       ).getDate();
       i++
@@ -62,8 +76,22 @@ export default function MonthPanel({ selectedDate }) {
         tasks: tasks,
       };
       days.push(
-        <Day cellValue={i} eventValues={eventObj} key={key++} className="day" />
+        <Day
+          cellValue={i}
+          eventValues={eventObj}
+          key={key}
+          day={key < 7 ? week[key] : ""}
+          onClick={handleClickOfDayCell}
+          className={`day ${
+            i == currentDate.getDate() &&
+            currentDate.getMonth() == selectedDate.date.getMonth() &&
+            currentDate.getFullYear() == selectedDate.date.getFullYear()
+              ? "current"
+              : ""
+          }`}
+        />
       );
+      key++;
     }
     return days;
   };

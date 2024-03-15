@@ -1,11 +1,11 @@
 import "../css/eventPill.css";
 
-export default function EventPill({ title, link, type, onClick }) {
+export default function EventPill({ title, link, onClick, type }) {
   return (
     <div
-      className="EventPill"
+      className={`EventPill ${type}`}
       onClick={() => {
-        onClick(type, link);
+        onClick(link);
       }}
     >
       <p>{title}</p>

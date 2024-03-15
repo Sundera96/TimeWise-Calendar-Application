@@ -15,7 +15,7 @@ function App() {
             reminder: [
               {
                 id: 100,
-                tag: "REMINDER",
+                type: "REMINDER",
                 tag: "Default",
                 title: "My First Reminder",
                 remindDateTime: "08/03/2024 06:42:00",
@@ -23,7 +23,7 @@ function App() {
               },
               {
                 id: 101,
-                tag: "REMINDER2",
+                type: "REMINDER",
                 tag: "Default",
                 title: "My Second Reminder",
                 remindDateTime: "08/03/2024 06:45:00",
@@ -33,7 +33,7 @@ function App() {
             meeting: [
               {
                 id: 102,
-                tag: "MEETING",
+                type: "MEETING",
                 tag: "Default",
                 title: "My First Meeting",
                 meetingStartDateTime: "08/03/2024 06:42:00",
@@ -44,7 +44,7 @@ function App() {
             task: [
               {
                 id: 103,
-                tag: "TASK",
+                type: "TASK",
                 tag: "Default",
                 title: "My First Task",
                 taskDate: "08/03/2024",

@@ -7,7 +7,6 @@ import "../css/centerPanel.css";
 export default function CenterPanel() {
   const [currDate, setCurrDate] = useState(new Date());
   const [isMonthView, setIsMonthView] = useState(true);
-
   function handleNextClick() {
     if (isMonthView) {
       setCurrDate((prevDate) => {
@@ -76,7 +75,12 @@ export default function CenterPanel() {
         </div>
       </div>
 
-      {isMonthView && <MonthPanel selectedDate={currDate} />}
+      {isMonthView && (
+        <MonthPanel
+          selectedDate={{ date: currDate, setCurrDate: setCurrDate }}
+          view={setIsMonthView}
+        />
+      )}
       {!isMonthView && <WeekPanel selectedDate={currDate} />}
     </div>
   );

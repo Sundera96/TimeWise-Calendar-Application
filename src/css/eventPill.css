@@ -1,5 +1,31 @@
-.EventPill {
+.EventPill.REMINDER {
   background-color: #92aa83;
+  color: white;
+  border-radius: 8px; /* Larger border radius for a more rounded look */
+  font-size: 9px; /* Slightly larger font size */
+  cursor: pointer;
+  font-weight: bold; /* Make text bold */
+  text-decoration: none; /* Remove default text underline */
+  overflow: hidden; /* Hide overflowed text */
+  white-space: nowrap; /* Prevent text from wrapping */
+  margin: 1px;
+}
+
+.EventPill.MEETING {
+  background-color: #539f98;
+  color: white;
+  border-radius: 8px; /* Larger border radius for a more rounded look */
+  font-size: 9px; /* Slightly larger font size */
+  cursor: pointer;
+  font-weight: bold; /* Make text bold */
+  text-decoration: none; /* Remove default text underline */
+  overflow: hidden; /* Hide overflowed text */
+  white-space: nowrap; /* Prevent text from wrapping */
+  margin: 1px;
+}
+
+.EventPill.TASK {
+  background-color: #689b8c;
   color: white;
   border-radius: 8px; /* Larger border radius for a more rounded look */
   font-size: 9px; /* Slightly larger font size */

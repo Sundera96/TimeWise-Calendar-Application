@@ -1,28 +1,49 @@
 import EventModal from "./EventModal.jsx";
 import EventPill from "./EventPill.jsx";
 import { useRef, useState } from "react";
-export default function Day({ cellValue, eventValues, ...props }) {
+import "../css/day.css";
+export default function Day({
+  cellValue,
+  day,
+  onClick,
+  eventValues,
+  ...props
+}) {
   const [modalEvent, setModalEvent] = useState({});
   const dialog = useRef();
-  function handleOnClickEventPill(title, link) {
+  function handleOnClickEventPill(link) {
     dialog.current.showModal();
+  }
+
+  function handleSaveModal(event) {
+    event.preventDefault();
+    dialog.current.close();
   }
 
   return (
     <>
-      <EventModal ref={dialog} event={modalEvent} />
+      <EventModal ref={dialog} onClick={handleSaveModal} event={modalEvent} />
       <div {...props}>
-        <div>{cellValue}</div>
+        {day !== "" && <p>{day}</p>}
+        <p
+          className="clickable-paragraph"
+          value={cellValue}
+          onClick={() => {
+            onClick(cellValue);
+          }}
+        >
+          {cellValue}
+        </p>
         {eventValues &&
           Object.entries(eventValues).map(
-            ([key, val]) =>
+            ([_, val]) =>
               val &&
               val.map((item) => (
                 <EventPill
                   key={item.id}
                   title={item.title}
                   link={item.link}
-                  type={key}
+                  type={item.type}
                   onClick={handleOnClickEventPill}
                 />
               ))

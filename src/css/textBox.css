@@ -1,18 +1,14 @@
-.textbox-container {
-  margin-bottom: 20px;
-}
-
 .textbox-label {
   font-size: 14px;
   color: #888;
-  display: block;
+  display: inline-block;
   margin-bottom: 6px;
   transition: color 0.3s ease;
 }
 
 .textbox {
   width: 100%;
-  padding: 12px;
+  padding: 8px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 6px;
