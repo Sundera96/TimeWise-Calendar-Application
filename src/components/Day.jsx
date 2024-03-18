@@ -12,6 +12,7 @@ export default function Day({
   const [modalEvent, setModalEvent] = useState({});
   const dialog = useRef();
   function handleOnClickEventPill(link) {
+    console.log(link);
     dialog.current.showModal();
   }
 
@@ -19,6 +20,7 @@ export default function Day({
     event.preventDefault();
     dialog.current.close();
   }
+  console.log(eventValues);
 
   return (
     <>
@@ -40,10 +42,10 @@ export default function Day({
               val &&
               val.map((item) => (
                 <EventPill
-                  key={item.id}
+                  key={item.eventId}
                   title={item.title}
-                  link={item.link}
-                  type={item.type}
+                  link={item.links[0].href}
+                  type={item.eventType}
                   onClick={handleOnClickEventPill}
                 />
               ))

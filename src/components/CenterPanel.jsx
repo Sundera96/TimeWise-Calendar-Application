@@ -1,12 +1,37 @@
 import MonthPanel from "./MonthPanel.jsx";
 import WeekPanel from "./WeekPanel.jsx";
 import NavigationButton from "./NavigationButton.jsx";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import ToggleButton from "./ToggleButton.jsx";
+import { EventsContext } from "../store/events-view-context.jsx";
+import { formatDate, currMonthEndDate } from "../util/util.js";
 import "../css/centerPanel.css";
 export default function CenterPanel() {
-  const [currDate, setCurrDate] = useState(new Date());
+  const [currDate, setCurrDate] = useState(new Date(new Date().setDate(1)));
   const [isMonthView, setIsMonthView] = useState(true);
+  const [_, setDataState] = useState({});
+  const eventsContext = useContext(EventsContext);
+  useEffect(() => {
+    fetch(
+      `http://localhost:8080/event/${formatDate(currDate)}/${currMonthEndDate(
+        currDate
+      )}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${eventsContext.token}`,
+        },
+      }
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setDataState(data);
+        eventsContext.events = data;
+      });
+  }, [isMonthView || currDate]);
+
   function handleNextClick() {
     if (isMonthView) {
       setCurrDate((prevDate) => {

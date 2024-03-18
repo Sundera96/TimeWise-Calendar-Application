@@ -60,13 +60,13 @@ export default function MonthPanel({ selectedDate, view }) {
       ).getDate();
       i++
     ) {
-      const reminders = eventsContext.reminder.filter((rem) => {
+      const reminders = eventsContext.events.filter((rem) => {
         return new Date(rem.remindDateTime).getDate() == i;
       });
-      const meetings = eventsContext.meeting.filter((meeting) => {
-        return new Date(meeting.meetingStartDateTime).getDate() == i;
+      const meetings = eventsContext.events.filter((meeting) => {
+        return new Date(meeting.startDateTime).getDate() == i;
       });
-      const tasks = eventsContext.task.filter((task) => {
+      const tasks = eventsContext.events.filter((task) => {
         return new Date(task.taskDate).getDate() == i;
       });
 
