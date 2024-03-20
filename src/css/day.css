@@ -1,4 +1,4 @@
-.clickable-paragraph > p {
+.clickable-paragraph {
   color: rgb(7, 199, 183); /* Color of the clickable text */
   text-decoration: none; /* Remove the default underline */
   font-weight: bold; /* Make the text bold */

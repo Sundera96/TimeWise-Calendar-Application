@@ -9,12 +9,20 @@ import "../css/centerPanel.css";
 export default function CenterPanel() {
   const [currDate, setCurrDate] = useState(new Date(new Date().setDate(1)));
   const [isMonthView, setIsMonthView] = useState(true);
-  const [_, setDataState] = useState({});
+  const [_, setData] = useState();
   const eventsContext = useContext(EventsContext);
   useEffect(() => {
+    let startDate;
+    if (isMonthView) {
+      startDate = new Date(currDate.setDate(1));
+    } else {
+      startDate = currDate;
+    }
+    console.log("fetching date");
+    console.log(startDate);
     fetch(
-      `http://localhost:8080/event/${formatDate(currDate)}/${currMonthEndDate(
-        currDate
+      `http://localhost:8080/event/${formatDate(startDate)}/${currMonthEndDate(
+        startDate
       )}`,
       {
         method: "GET",
@@ -27,20 +35,16 @@ export default function CenterPanel() {
         return response.json();
       })
       .then((data) => {
-        setDataState(data);
         eventsContext.events = data;
+        console.log(data);
+        setData(data);
       });
-  }, [isMonthView || currDate]);
+  }, [isMonthView, currDate]);
 
   function handleNextClick() {
     if (isMonthView) {
-      setCurrDate((prevDate) => {
-        const date = new Date();
-        date.setFullYear(prevDate.getFullYear());
-        date.setDate(1);
-        date.setMonth(prevDate.getMonth() + 1);
-        return date;
-      });
+      console.log("next getting clicked");
+      setCurrDate(new Date(currDate.setMonth(currDate.getMonth() + 1)));
     } else {
       setCurrDate((prevDate) => {
         const date = new Date();
@@ -102,7 +106,7 @@ export default function CenterPanel() {
 
       {isMonthView && (
         <MonthPanel
-          selectedDate={{ date: currDate, setCurrDate: setCurrDate }}
+          currDateObject={{ currDate: currDate, setCurrDate: setCurrDate }}
           view={setIsMonthView}
         />
       )}

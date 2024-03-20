@@ -1,7 +1,9 @@
 import EventModal from "./EventModal.jsx";
 import EventPill from "./EventPill.jsx";
-import { useRef, useState } from "react";
+import { useRef, useState, useContext } from "react";
+import { EventsContext } from "../store/events-view-context.jsx";
 import "../css/day.css";
+import { fetchEvent } from "../util/query.js";
 export default function Day({
   cellValue,
   day,
@@ -9,10 +11,17 @@ export default function Day({
   eventValues,
   ...props
 }) {
-  const [modalEvent, setModalEvent] = useState({});
+  console.log("Day.jsx");
+  const [modalEvent, setModalEvent] = useState({
+    title: "",
+    topic: "",
+    priority: "",
+  });
   const dialog = useRef();
-  function handleOnClickEventPill(link) {
-    console.log(link);
+  const eventContext = useContext(EventsContext);
+  async function handleOnClickEventPill(link) {
+    const data = await fetchEvent(link, eventContext.token);
+    setModalEvent(data);
     dialog.current.showModal();
   }
 
@@ -20,7 +29,6 @@ export default function Day({
     event.preventDefault();
     dialog.current.close();
   }
-  console.log(eventValues);
 
   return (
     <>

@@ -7,7 +7,7 @@ import "./css/container.css";
 import { EventsContext } from "./store/events-view-context";
 
 const token =
-  "eyJhbGciOiJIUzI1NiJ9.eyJwYXNzd29yZCI6InBhc3MiLCJzdWIiOiJzdW5kZXJhIiwiaWF0IjoxNzEwNzMzMzQ4LCJleHAiOjE3MTA3MzQ3ODh9.MjPVILYP8jk4h6SJ7BDZ-JNxmwKwJzvhZ5KsEHVFY1Q";
+  "eyJhbGciOiJIUzI1NiJ9.eyJwYXNzd29yZCI6InBhc3MiLCJzdWIiOiJzdW5kZXJhIiwiaWF0IjoxNzEwOTA5Mjg3LCJleHAiOjE3MTA5MjM2ODd9.jZEGYfMQjp6efT3JaFV41raIaHZ-uuJrSsqctHfWF3k";
 function App() {
   return (
     <>

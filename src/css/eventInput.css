@@ -1,5 +1,5 @@
-.textbox-container {
-  background-color: #f0f0f0;
+.textbox-container > textarea {
+  background-color: #afdec9;
 }
 
 .myTextBox {

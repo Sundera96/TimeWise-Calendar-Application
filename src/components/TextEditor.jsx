@@ -1,16 +1,19 @@
 import { Editor } from "@tinymce/tinymce-react";
 import { useRef } from "react";
 import "../css/textEditor.css";
-export default function TextEditor() {
+export default function TextEditor({
+  editorInput,
+  handleOnChangeInput,
+  label,
+}) {
   const editorRef = useRef();
-  const log = () => {
-    if (editorRef.current) {
-      console.log(editorRef.current.getContent());
-    }
-  };
   return (
     <div className="textEditorContainer">
       <Editor
+        onChange={(event) => {
+          handleOnChangeInput(label, event);
+        }}
+        initialValue={editorInput}
         onInit={(evt, editor) => (editorRef.current = editor)}
         apiKey="yrts0vwgndyeh7evrtmrr652qrug4to4qd8cvub6wt1by4mw"
         init={{
@@ -26,7 +29,6 @@ export default function TextEditor() {
             `,
         }}
       />
-      <button onClick={log}>Log editor content</button>
     </div>
   );
 }

@@ -4,17 +4,18 @@ import { EventsContext } from "../store/events-view-context.jsx";
 import "../css/monthPanel.css";
 
 const week = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-export default function MonthPanel({ selectedDate, view }) {
+export default function MonthPanel({ currDateObject, view }) {
   const eventsContext = useContext(EventsContext);
   const [currentDate, setCurrentDate] = useState(new Date());
   // const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth());
   // const [currMonthItems, setCurrMonthItems] = useState([]);
-
+  console.log("How Many Times?");
+  console.log(eventsContext.events);
   useEffect(() => {
     //Update the calendar at the beginning of each month
     const intervalId = setInterval(() => {
       const now = new Date();
-      if (now.getDate() !== currentDate.getDate()) {
+      if (now.getDate() !== currDateObject.currDate.getDate()) {
         setCurrentDate(now);
       }
     }, 60000); // Check every minute for month change
@@ -25,7 +26,7 @@ export default function MonthPanel({ selectedDate, view }) {
   }, []);
 
   function handleClickOfDayCell(date) {
-    selectedDate.setCurrDate((prev) => {
+    currDateObject.setCurrDate((prev) => {
       return new Date(prev.setDate(date));
     });
     view(false);
@@ -34,8 +35,8 @@ export default function MonthPanel({ selectedDate, view }) {
   const generateCalendar = () => {
     const days = [];
     const firstDayOfMonth = new Date(
-      selectedDate.date.getFullYear(),
-      selectedDate.date.getMonth(),
+      currDateObject.currDate.getFullYear(),
+      currDateObject.currDate.getMonth(),
       1
     );
     const startingDay = firstDayOfMonth.getDay();
@@ -54,8 +55,8 @@ export default function MonthPanel({ selectedDate, view }) {
       let i = 1;
       i <=
       new Date(
-        selectedDate.date.getFullYear(),
-        selectedDate.date.getMonth() + 1,
+        currDateObject.currDate.getFullYear(),
+        currDateObject.currDate.getMonth() + 1,
         0
       ).getDate();
       i++
@@ -84,8 +85,8 @@ export default function MonthPanel({ selectedDate, view }) {
           onClick={handleClickOfDayCell}
           className={`day ${
             i == currentDate.getDate() &&
-            currentDate.getMonth() == selectedDate.date.getMonth() &&
-            currentDate.getFullYear() == selectedDate.date.getFullYear()
+            currentDate.getMonth() == currDateObject.currDate.getMonth() &&
+            currentDate.getFullYear() == currDateObject.currDate.getFullYear()
               ? "current"
               : ""
           }`}
