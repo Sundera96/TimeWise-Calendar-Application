@@ -4,26 +4,23 @@ import { createPortal } from "react-dom";
 import TextEditor from "./TextEditor";
 import "../css/eventModal.css";
 import DateTime from "./DateTime";
-const EventModal = forwardRef(function EventModal({ event, onClick }, ref) {
-  const [eventData, setEventData] = useState(event);
-
-  useEffect(() => {
-    setEventData(event);
-  }, [event]);
-
+const EventModal = forwardRef(function EventModal(
+  { eventData, setEventData, onClick, handleOnClose },
+  ref
+) {
   function handleOnChangeInput(label, events) {
-    console.log(label);
-    const updatedEvent = {
-      ...eventData,
-      [label]: events.target.value,
-    };
-    setEventData(updatedEvent);
+    setEventData((prevData) => {
+      return {
+        ...prevData,
+        [label]: events.target.value,
+      };
+    });
   }
 
   return createPortal(
     <dialog ref={ref} className="modal-dialog">
-      <h2> {eventData.eventType}</h2>
-      <form onSubmit={onClick}>
+      <form method="dialog" id={eventData.eventId} onSubmit={onClick}>
+        <h2 id="eventTypeForm">{eventData.eventType}</h2>
         <TextBox
           labelInput={"Title"}
           label={"title"}
@@ -42,6 +39,14 @@ const EventModal = forwardRef(function EventModal({ event, onClick }, ref) {
           value={eventData.priority}
           handleOnChangeInput={handleOnChangeInput}
         ></TextBox>
+        {eventData.eventType === "LINK" && (
+          <TextBox
+            labelInput={"Link"}
+            label={link}
+            value={eventData.link}
+            className={"LINK"}
+          ></TextBox>
+        )}
         {eventData.eventType == "MEETING" && (
           <div>
             <DateTime
@@ -89,7 +94,9 @@ const EventModal = forwardRef(function EventModal({ event, onClick }, ref) {
           handleOnChangeInput={handleOnChangeInput}
           label={"notes"}
         ></TextEditor>
-        <button>Close</button>
+        <button type="button" onClick={handleOnClose}>
+          Close
+        </button>
         <button type="submit" className="SaveButton">
           Save
         </button>

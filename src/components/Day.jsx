@@ -11,7 +11,6 @@ export default function Day({
   eventValues,
   ...props
 }) {
-  console.log("Day.jsx");
   const [modalEvent, setModalEvent] = useState({
     title: "",
     topic: "",
@@ -25,14 +24,29 @@ export default function Day({
     dialog.current.showModal();
   }
 
-  function handleSaveModal(event) {
-    event.preventDefault();
+  async function saveEvent(events) {}
+
+  function handleSaveModal(events) {
+    events.preventDefault();
+    console.log(modalEvent);
     dialog.current.close();
+  }
+
+  function handleOnClose() {
+    dialog.current.close();
+    const id = "8a6ffcaa-eb50-48a6-9db4-0fc5ff8d4f0a";
+    console.log(eventValues);
   }
 
   return (
     <>
-      <EventModal ref={dialog} onClick={handleSaveModal} event={modalEvent} />
+      <EventModal
+        ref={dialog}
+        onClick={handleSaveModal}
+        eventData={modalEvent}
+        setEventData={setModalEvent}
+        handleOnClose={handleOnClose}
+      />
       <div {...props}>
         {day !== "" && <p>{day}</p>}
         <p
