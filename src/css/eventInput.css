@@ -1,11 +1,8 @@
-.textbox-container > textarea {
-  background-color: #afdec9;
+menu{
+    padding: 0;
+    margin: 0;
 }
 
-.myTextBox {
-  width: 100%;
-  height: 30vh;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-sizing: border-box;
+.currentTab{
+    background-color: #084e69;
 }

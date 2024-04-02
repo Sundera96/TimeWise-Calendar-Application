@@ -1,9 +1,9 @@
 import "../css/textBox.css";
-export default function TextBox({ label, value, handleOnChangeInput }) {
+export default function TextBox({ label,labelInput, value, handleOnChangeInput }) {
   return (
     <div className="textbox-container">
       <label htmlFor={label} className="textbox-label">
-        {label}
+        {labelInput}
       </label>
       <input
         type="text"

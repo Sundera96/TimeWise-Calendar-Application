@@ -17,6 +17,16 @@ const EventModal = forwardRef(function EventModal(
     });
   }
 
+  function handleEditorChangeInput(label, content) {
+    console.log(label);
+    setEventData((prevData) => {
+      return {
+        ...prevData,
+        [label]: content,
+      };
+    });
+  }
+
   return createPortal(
     <dialog ref={ref} className="modal-dialog">
       <form method="dialog" id={eventData.eventId} onSubmit={onClick}>
@@ -42,7 +52,7 @@ const EventModal = forwardRef(function EventModal(
         {eventData.eventType === "LINK" && (
           <TextBox
             labelInput={"Link"}
-            label={link}
+            label={"link"}
             value={eventData.link}
             className={"LINK"}
           ></TextBox>
@@ -91,7 +101,7 @@ const EventModal = forwardRef(function EventModal(
         )}
         <TextEditor
           editorInput={eventData.notes}
-          handleOnChangeInput={handleOnChangeInput}
+          handleOnChangeInput={handleEditorChangeInput}
           label={"notes"}
         ></TextEditor>
         <button type="button" onClick={handleOnClose}>
