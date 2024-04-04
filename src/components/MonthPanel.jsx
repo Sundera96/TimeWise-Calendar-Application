@@ -68,13 +68,20 @@ export default function MonthPanel({ currDateObject, view }) {
         return new Date(meeting.startDateTime).getDate() == i;
       });
       const tasks = eventsContext.events.filter((task) => {
-        return new Date(task.taskDate).getDate() == i;
+        console.log("Month Panel");
+        console.log(task);
+        return new Date(task.taskDate).getDate() == i - 1;
+      });
+
+      const links = eventsContext.events.filter((link) => {
+        return new Date(link.linkDateTime).getDate() == i;
       });
 
       const eventObj = {
         reminders: reminders,
         meetings: meetings,
         tasks: tasks,
+        links: links,
       };
       days.push(
         <Day

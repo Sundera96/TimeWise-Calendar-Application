@@ -10,7 +10,7 @@ export default function TextEditor({
   return (
     <div className="textEditorContainer">
       <Editor
-        initialValue={editorInput}
+        value={editorInput}
         onEditorChange={(newValue, editor) =>
           handleOnChangeInput(label, newValue)
         }

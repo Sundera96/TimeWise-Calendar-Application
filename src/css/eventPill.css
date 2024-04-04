@@ -1,8 +1,8 @@
 .EventPill.REMINDER {
-  background-color: #92aa83;
-  color: white;
+  background-color: #ffcc66;
+  color: black;
   border-radius: 8px; /* Larger border radius for a more rounded look */
-  font-size: 9px; /* Slightly larger font size */
+  font-size: 11px; /* Slightly larger font size */
   cursor: pointer;
   font-weight: bold; /* Make text bold */
   text-decoration: none; /* Remove default text underline */
@@ -12,10 +12,10 @@
 }
 
 .EventPill.MEETING {
-  background-color: #539f98;
-  color: white;
+  background-color: #66cccc;
+  color: black;
   border-radius: 8px; /* Larger border radius for a more rounded look */
-  font-size: 9px; /* Slightly larger font size */
+  font-size: 11px; /* Slightly larger font size */
   cursor: pointer;
   font-weight: bold; /* Make text bold */
   text-decoration: none; /* Remove default text underline */
@@ -25,10 +25,23 @@
 }
 
 .EventPill.TASK {
-  background-color: #689b8c;
-  color: white;
+  background-color: #ff9999;
+  color: black;
   border-radius: 8px; /* Larger border radius for a more rounded look */
-  font-size: 9px; /* Slightly larger font size */
+  font-size: 11px; /* Slightly larger font size */
+  cursor: pointer;
+  font-weight: bold; /* Make text bold */
+  text-decoration: none; /* Remove default text underline */
+  overflow: hidden; /* Hide overflowed text */
+  white-space: nowrap; /* Prevent text from wrapping */
+  margin: 1px;
+}
+
+.EventPill.LINK {
+  background-color: #6699cc;
+  color: black;
+  border-radius: 8px; /* Larger border radius for a more rounded look */
+  font-size: 11px; /* Slightly larger font size */
   cursor: pointer;
   font-weight: bold; /* Make text bold */
   text-decoration: none; /* Remove default text underline */

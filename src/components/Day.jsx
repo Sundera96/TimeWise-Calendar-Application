@@ -18,8 +18,11 @@ export default function Day({
   });
   const dialog = useRef();
   const eventContext = useContext(EventsContext);
+
   async function handleOnClickEventPill(link) {
     const data = await fetchEvent(link, eventContext.token);
+    console.log("Day");
+    console.log(data);
     setModalEvent(data);
     dialog.current.showModal();
   }

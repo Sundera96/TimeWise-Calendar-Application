@@ -1,8 +1,9 @@
-menu{
-    padding: 0;
-    margin: 0;
+menu {
+  padding: 0;
+  margin: 0;
+  margin-bottom: 4px;
 }
 
-.currentTab{
-    background-color: #084e69;
+.currentTab {
+  background-color: #084e69;
 }

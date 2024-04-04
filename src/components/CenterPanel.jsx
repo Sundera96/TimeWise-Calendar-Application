@@ -4,12 +4,12 @@ import NavigationButton from "./NavigationButton.jsx";
 import { useState, useContext, useEffect } from "react";
 import ToggleButton from "./ToggleButton.jsx";
 import { EventsContext } from "../store/events-view-context.jsx";
-import { formatDate, currMonthEndDate } from "../util/util.js";
+import { fetchEvents } from "../util/query.js";
 import "../css/centerPanel.css";
+import { formatDate, monthEndDate } from "../util/util.js";
 export default function CenterPanel() {
   const [currDate, setCurrDate] = useState(new Date(new Date().setDate(1)));
   const [isMonthView, setIsMonthView] = useState(true);
-  const [_, setData] = useState();
   const eventsContext = useContext(EventsContext);
   useEffect(() => {
     let startDate;
@@ -18,33 +18,26 @@ export default function CenterPanel() {
     } else {
       startDate = currDate;
     }
-    console.log("fetching date");
-    console.log(startDate);
-    fetch(
-      `http://localhost:8080/event/${formatDate(startDate)}/${currMonthEndDate(
-        startDate
-      )}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${eventsContext.token}`,
-        },
-      }
-    )
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        eventsContext.events = data;
-        console.log(data);
-        setData(data);
-      });
+    async function getAllEvents() {
+      fetchEvents(
+        eventsContext.selectedStartDate,
+        eventsContext.selectedEndDate,
+        eventsContext.setEvents,
+        eventsContext.token
+      );
+    }
+    getAllEvents();
   }, [isMonthView, currDate]);
 
   function handleNextClick() {
     if (isMonthView) {
       console.log("next getting clicked");
-      setCurrDate(new Date(currDate.setMonth(currDate.getMonth() + 1)));
+      const selectedDate = new Date(currDate.setMonth(currDate.getMonth() + 1));
+      console.log("seelcted date");
+      console.log(selectedDate);
+      eventsContext.selectedStartDate = formatDate(selectedDate);
+      eventsContext.selectedEndDate = formatDate(monthEndDate(selectedDate));
+      setCurrDate(selectedDate);
     } else {
       setCurrDate((prevDate) => {
         const date = new Date();
@@ -63,6 +56,8 @@ export default function CenterPanel() {
         date.setFullYear(prevDate.getFullYear());
         date.setDate(1);
         date.setMonth(prevDate.getMonth() - 1);
+        eventsContext.selectedStartDate = formatDate(date);
+        eventsContext.selectedEndDate = formatDate(monthEndDate(date));
         return date;
       });
     } else {

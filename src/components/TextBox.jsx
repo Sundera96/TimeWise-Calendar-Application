@@ -1,5 +1,10 @@
 import "../css/textBox.css";
-export default function TextBox({ label,labelInput, value, handleOnChangeInput }) {
+export default function TextBox({
+  label,
+  labelInput,
+  value,
+  handleOnChangeInput,
+}) {
   return (
     <div className="textbox-container">
       <label htmlFor={label} className="textbox-label">
@@ -11,7 +16,7 @@ export default function TextBox({ label,labelInput, value, handleOnChangeInput }
         id={label}
         value={value}
         onChange={(event) => {
-          handleOnChangeInput(label, event);
+          handleOnChangeInput(label, event.target.value);
         }}
       ></input>
     </div>

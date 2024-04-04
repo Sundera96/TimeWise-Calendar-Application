@@ -5,16 +5,25 @@ import LeftPanel from "./components/LeftPanel";
 import RightPanel from "./components/RightPanel";
 import "./css/container.css";
 import { EventsContext } from "./store/events-view-context";
+import { formatDate, monthEndDate } from "./util/util";
 
 const token =
-  "eyJhbGciOiJIUzI1NiJ9.eyJwYXNzd29yZCI6InBhc3MiLCJzdWIiOiJzdW5kZXJhIiwiaWF0IjoxNzEyMDEzNzU5LCJleHAiOjE3MTIwMjgxNTl9.s8FCTFsPFGXG4vASbgFBRNSiJ092VeN-yHfcgcHphVA";
+  "eyJhbGciOiJIUzI1NiJ9.eyJwYXNzd29yZCI6InBhc3MiLCJzdWIiOiJzdW5kZXJhIiwiaWF0IjoxNzEyMjcwNzY3LCJleHAiOjE3MTIyODUxNjd9.JTfJDAjjQoKLNQSNZItbz66DV6Xw13eu7Vk9rlTe2d0";
 function App() {
-  const [events,setEvents] = useState([]);
+  const [events, setEvents] = useState([]);
   return (
     <>
       <Header />
       <div className="Container">
-        <EventsContext.Provider value={{ events: events, setEvents:setEvents,token: token }}>
+        <EventsContext.Provider
+          value={{
+            events: events,
+            setEvents: setEvents,
+            token: token,
+            selectedStartDate: formatDate(new Date(new Date().setDate(1))),
+            selectedEndDate: formatDate(monthEndDate(new Date())),
+          }}
+        >
           <LeftPanel />
           <CenterPanel />
           <RightPanel />

@@ -1,24 +1,55 @@
-import { useState } from "react";
 import "../css/eventInput.css";
 import TabButton from "./TabButton.jsx";
-import TextBox from "./TextBox.jsx";
-import DateTime from "./DateTime.jsx";
-import TextEditor from "./TextEditor.jsx";
-export default function EventInput({ event, setEvent, onHandleSubmit }) {
-  const [selectedTab, setSelectedTab] = useState("");
-
+import EventFormFields from "./EventFormFields.jsx";
+export default function EventInput({
+  event,
+  setEvent,
+  selectedTab,
+  setSelectedTab,
+  onHandleSubmit,
+}) {
   function handleOnClick(inputValue) {
+    if (inputValue === "REMINDER") {
+      setEvent((prevData) => {
+        return {
+          ...prevData,
+          ["remind-date-time"]: new Date(),
+          ["type-tag"]: inputValue,
+        };
+      });
+    } else if (inputValue === "MEETING") {
+      setEvent((prevData) => {
+        return {
+          ...prevData,
+          ["start-date-time"]: new Date(),
+          ["end-date-time"]: new Date(),
+          ["type-tag"]: inputValue,
+        };
+      });
+    } else if (inputValue === "TASK") {
+      setEvent((prevData) => {
+        return {
+          ...prevData,
+          ["task-date"]: new Date(),
+          ["type-tag"]: inputValue,
+        };
+      });
+    } else if (inputValue === "LINK") {
+      setEvent((prevData) => {
+        return {
+          ...prevData,
+          ["type-tag"]: inputValue,
+        };
+      });
+    }
     setSelectedTab(inputValue);
   }
 
-  function handleOnChangeInput(label, events) {
-    console.log(label);
-    console.log(events.target.value);
-    console.log("end");
+  function handleOnChangeInput(label, value) {
     setEvent((prevData) => {
       return {
         ...prevData,
-        [label]: events.target.value,
+        [label]: value,
       };
     });
   }
@@ -32,6 +63,8 @@ export default function EventInput({ event, setEvent, onHandleSubmit }) {
       };
     });
   }
+  console.log("Reminder");
+  console.log(event["remind-date-time"]);
 
   return (
     <div className="event-input-container">
@@ -62,89 +95,12 @@ export default function EventInput({ event, setEvent, onHandleSubmit }) {
         </TabButton>
       </menu>
       <form onSubmit={onHandleSubmit}>
-        {selectedTab != "" && (
-          <>
-            <TextBox
-              labelInput={"Title"}
-              label={"title"}
-              value={event.title}
-              handleOnChangeInput={handleOnChangeInput}
-            />
-            <TextBox
-              labelInput={"Tag"}
-              label={"topic"}
-              handleOnChangeInput={handleOnChangeInput}
-            />
-            <TextBox
-              labelInput={"Priority"}
-              label={"priority"}
-              value={event.priority}
-              handleOnChangeInput={handleOnChangeInput}
-            ></TextBox>
-          </>
-        )}
-        {selectedTab === "LINK" && (
-          <TextBox
-            labelInput={"Link"}
-            label={"link"}
-            value={event.link}
-            handleOnChangeInput={handleOnChangeInput}
-          ></TextBox>
-        )}
-        {selectedTab == "MEETING" && (
-          <>
-            <DateTime
-              inputs={{
-                dateTime: event.startDateTime,
-                labelInput: "Start ",
-                label: "startDateTime",
-              }}
-              handleOnChangeInput={handleOnChangeInput}
-            />
-            <DateTime
-              inputs={{
-                dateTime: event.endDateTime,
-                labelInput: "End ",
-                label: "endDateTime",
-              }}
-              handleOnChangeInput={handleOnChangeInput}
-            />
-          </>
-        )}
-
-        {selectedTab == "REMINDER" && (
-          <DateTime
-            inputs={{
-              dateTime: event.remindDateTime,
-              labelInput: "Remind Time",
-              label: "remindDateTime",
-            }}
-            handleOnChangeInput={handleOnChangeInput}
-          />
-        )}
-
-        {selectedTab == "TASK" && (
-          <DateTime
-            inputs={{
-              dateTime: event.taskDate,
-              labelInput: "Task Date",
-              label: "taskDate",
-            }}
-            handleOnChangeInput={handleOnChangeInput}
-          />
-        )}
-        {selectedTab != "" && (
-          <>
-            <TextEditor
-              editorInput={event.notes}
-              handleOnChangeInput={handleEditorChangeInput}
-              label={"notes"}
-            ></TextEditor>
-            <button type="submit" className="SaveButton">
-              Submit
-            </button>
-          </>
-        )}
+        <EventFormFields
+          event={event}
+          handleOnChangeInput={handleOnChangeInput}
+          handleEditorChangeInput={handleEditorChangeInput}
+          selectedTab={selectedTab}
+        />
       </form>
     </div>
   );

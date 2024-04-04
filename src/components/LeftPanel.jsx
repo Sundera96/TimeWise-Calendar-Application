@@ -1,27 +1,39 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import "../css/leftPanel.css";
 import EventInput from "./EventInput.jsx";
+import { addEvent } from "../util/query.js";
+import { EventsContext } from "../store/events-view-context.jsx";
+
 export default function LeftPanel() {
-  const [event, setEvent] = useState({
-    title: "",
-    topic: "",
-    priority: "",
-  });
+  const eventsContext = useContext(EventsContext);
+  const [event, setEvent] = useState({ title: "", topic: "", priority: "" });
+  const [selectedTab, setSelectedTab] = useState("");
 
   function onHandleSubmit(events) {
     events.preventDefault();
-    console.log(event);
+    try {
+      addEvent(
+        event,
+        eventsContext.token,
+        eventsContext.selectedStartDate,
+        eventsContext.selectedEndDate,
+        eventsContext.events,
+        eventsContext.setEvents
+      );
+      setEvent({ title: "", topic: "", priority: "" });
+      setSelectedTab(false);
+    } catch (error) {}
   }
 
   return (
-    <>
-      <div className="LeftPanel">
-        <EventInput
-          event={event}
-          setEvent={setEvent}
-          onHandleSubmit={onHandleSubmit}
-        ></EventInput>
-      </div>
-    </>
+    <div className="LeftPanel">
+      <EventInput
+        event={event}
+        setEvent={setEvent}
+        selectedTab={selectedTab}
+        setSelectedTab={setSelectedTab}
+        onHandleSubmit={onHandleSubmit}
+      />
+    </div>
   );
 }

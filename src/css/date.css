@@ -1,0 +1,25 @@
+eventTime {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.eventTime label {
+  margin-bottom: 5px;
+}
+
+.eventTime input[type="date"] {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #4caf50;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* Optional: Add styles to make it visually more appealing */
+.eventTime input[type="date"]:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
