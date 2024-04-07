@@ -3,41 +3,48 @@ import EventPill from "./EventPill.jsx";
 import { useRef, useState, useContext } from "react";
 import { EventsContext } from "../store/events-view-context.jsx";
 import "../css/day.css";
-import { fetchEvent } from "../util/query.js";
+import { updateEvent, fetchEvent } from "../util/query.js";
 export default function Day({
   cellValue,
   day,
   onClick,
   eventValues,
+  monthDateState,
   ...props
 }) {
   const [modalEvent, setModalEvent] = useState({
     title: "",
     topic: "",
-    priority: "",
   });
   const dialog = useRef();
   const eventContext = useContext(EventsContext);
 
   async function handleOnClickEventPill(link) {
     const data = await fetchEvent(link, eventContext.token);
-    console.log("Day");
-    console.log(data);
     setModalEvent(data);
     dialog.current.showModal();
   }
 
-  async function saveEvent(events) {}
-
-  function handleSaveModal(events) {
+  async function handleSaveModal(events, link) {
     events.preventDefault();
-    console.log(modalEvent);
+    console.log("INside Handle Save Modal");
+    console.log(eventContext.events);
+    const eventContextData = await updateEvent(
+      modalEvent,
+      eventContext.token,
+      eventContext.selectedStartDate,
+      eventContext.selectedEndDate,
+      link,
+      eventContext.events
+    );
+    console.log(eventContextData);
+    eventContext.events = eventContextData;
+    monthDateState.setCurrentDate(new Date(monthDateState.currentDate));
     dialog.current.close();
   }
 
   function handleOnClose() {
     dialog.current.close();
-    const id = "8a6ffcaa-eb50-48a6-9db4-0fc5ff8d4f0a";
     console.log(eventValues);
   }
 

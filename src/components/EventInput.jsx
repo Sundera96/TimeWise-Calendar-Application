@@ -1,6 +1,7 @@
 import "../css/eventInput.css";
 import TabButton from "./TabButton.jsx";
 import EventFormFields from "./EventFormFields.jsx";
+import { converDateToDateTimeStr } from "../util/util.js";
 export default function EventInput({
   event,
   setEvent,
@@ -13,25 +14,28 @@ export default function EventInput({
       setEvent((prevData) => {
         return {
           ...prevData,
-          ["remind-date-time"]: new Date(),
+          ["remind-date-time"]: converDateToDateTimeStr(new Date()),
           ["type-tag"]: inputValue,
+          ["priority"]: 1,
         };
       });
     } else if (inputValue === "MEETING") {
       setEvent((prevData) => {
         return {
           ...prevData,
-          ["start-date-time"]: new Date(),
-          ["end-date-time"]: new Date(),
+          ["start-date-time"]: converDateToDateTimeStr(new Date()),
+          ["end-date-time"]: converDateToDateTimeStr(new Date()),
           ["type-tag"]: inputValue,
+          ["priority"]: 1,
         };
       });
     } else if (inputValue === "TASK") {
       setEvent((prevData) => {
         return {
           ...prevData,
-          ["task-date"]: new Date(),
+          ["task-date"]: converDateToDateTimeStr(new Date()).substring(0, 10),
           ["type-tag"]: inputValue,
+          ["priority"]: 1,
         };
       });
     } else if (inputValue === "LINK") {
@@ -39,6 +43,7 @@ export default function EventInput({
         return {
           ...prevData,
           ["type-tag"]: inputValue,
+          ["priority"]: 1,
         };
       });
     }
@@ -46,6 +51,8 @@ export default function EventInput({
   }
 
   function handleOnChangeInput(label, value) {
+    console.log("handle change");
+    console.log(value);
     setEvent((prevData) => {
       return {
         ...prevData,
@@ -63,8 +70,6 @@ export default function EventInput({
       };
     });
   }
-  console.log("Reminder");
-  console.log(event["remind-date-time"]);
 
   return (
     <div className="event-input-container">

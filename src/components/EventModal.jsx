@@ -6,11 +6,11 @@ const EventModal = forwardRef(function EventModal(
   { eventData, setEventData, onClick, handleOnClose },
   ref
 ) {
-  function handleOnChangeInput(label, events) {
+  function handleOnChangeInput(label, value) {
     setEventData((prevData) => {
       return {
         ...prevData,
-        [label]: events.target.value,
+        [label]: value,
       };
     });
   }
@@ -27,7 +27,13 @@ const EventModal = forwardRef(function EventModal(
 
   return createPortal(
     <dialog ref={ref} className="modal-dialog">
-      <form method="dialog" id={eventData["event-id"]} onSubmit={onClick}>
+      <form
+        method="dialog"
+        id={eventData["event-id"]}
+        onSubmit={(events) => {
+          onClick(events, eventData["update"].href);
+        }}
+      >
         <h2 id="eventTypeForm">{eventData["type-tag"]}</h2>
         <EventFormFields
           event={eventData}

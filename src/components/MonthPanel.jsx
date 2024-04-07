@@ -10,19 +10,18 @@ export default function MonthPanel({ currDateObject, view }) {
   // const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth());
   // const [currMonthItems, setCurrMonthItems] = useState([]);
   console.log("How Many Times?");
-  console.log(eventsContext.events);
   useEffect(() => {
     //Update the calendar at the beginning of each month
-    const intervalId = setInterval(() => {
-      const now = new Date();
-      if (now.getDate() !== currDateObject.currDate.getDate()) {
-        setCurrentDate(now);
-      }
-    }, 60000); // Check every minute for month change
-    return () => clearInterval(intervalId); // Clear interval on component unmount
-    /**
-     * If current month changes execute data fetch
-     */
+    // const intervalId = setInterval(() => {
+    //   const now = new Date();
+    //   if (now.getDate() !== currDateObject.currDate.getDate()) {
+    //     setCurrentDate(now);
+    //   }
+    // }, 60000); // Check every minute for month change
+    // return () => clearInterval(intervalId); // Clear interval on component unmount
+    // /**
+    //  * If current month changes execute data fetch
+    //  */
   }, []);
 
   function handleClickOfDayCell(date) {
@@ -68,8 +67,6 @@ export default function MonthPanel({ currDateObject, view }) {
         return new Date(meeting.startDateTime).getDate() == i;
       });
       const tasks = eventsContext.events.filter((task) => {
-        console.log("Month Panel");
-        console.log(task);
         return new Date(task.taskDate).getDate() == i - 1;
       });
 
@@ -78,10 +75,10 @@ export default function MonthPanel({ currDateObject, view }) {
       });
 
       const eventObj = {
-        reminders: reminders,
-        meetings: meetings,
-        tasks: tasks,
-        links: links,
+        reminder: reminders,
+        meeting: meetings,
+        task: tasks,
+        link: links,
       };
       days.push(
         <Day
@@ -90,6 +87,10 @@ export default function MonthPanel({ currDateObject, view }) {
           key={key}
           day={key < 7 ? week[key] : ""}
           onClick={handleClickOfDayCell}
+          monthDateState={{
+            currentDate: currentDate,
+            setCurrentDate: setCurrentDate,
+          }}
           className={`day ${
             i == currentDate.getDate() &&
             currentDate.getMonth() == currDateObject.currDate.getMonth() &&

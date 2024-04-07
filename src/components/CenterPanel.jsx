@@ -37,6 +37,7 @@ export default function CenterPanel() {
       console.log(selectedDate);
       eventsContext.selectedStartDate = formatDate(selectedDate);
       eventsContext.selectedEndDate = formatDate(monthEndDate(selectedDate));
+      eventsContext.events = [];
       setCurrDate(selectedDate);
     } else {
       setCurrDate((prevDate) => {
@@ -58,6 +59,7 @@ export default function CenterPanel() {
         date.setMonth(prevDate.getMonth() - 1);
         eventsContext.selectedStartDate = formatDate(date);
         eventsContext.selectedEndDate = formatDate(monthEndDate(date));
+        eventsContext.events = [];
         return date;
       });
     } else {

@@ -2,6 +2,7 @@ import TextBox from "./TextBox.jsx";
 import DateTime from "./DateTime.jsx";
 import TextEditor from "./TextEditor.jsx";
 import EventDate from "./EventDate.jsx";
+import Dropdown from "./Dropdown.jsx";
 export default function EventFormFields({
   event,
   handleOnChangeInput,
@@ -24,12 +25,12 @@ export default function EventFormFields({
             value={event["topic"]}
             handleOnChangeInput={handleOnChangeInput}
           />
-          <TextBox
+          <Dropdown
             labelInput={"Priority"}
             label={"priority"}
             value={event["priority"]}
             handleOnChangeInput={handleOnChangeInput}
-          ></TextBox>
+          ></Dropdown>
         </>
       )}
       {selectedTab === "LINK" && (
@@ -44,7 +45,7 @@ export default function EventFormFields({
         <>
           <DateTime
             inputs={{
-              dateTime: new Date(event["start-date-time"]),
+              dateTime: event["start-date-time"],
               labelInput: "Start",
               label: "start-date-time",
             }}
@@ -52,7 +53,7 @@ export default function EventFormFields({
           />
           <DateTime
             inputs={{
-              dateTime: new Date(event["end-date-time"]),
+              dateTime: event["end-date-time"],
               labelInput: "End",
               label: "end-date-time",
             }}
@@ -62,14 +63,25 @@ export default function EventFormFields({
       )}
 
       {selectedTab == "REMINDER" && (
-        <DateTime
-          inputs={{
-            dateTime: new Date(event["remind-date-time"]),
-            labelInput: "Time",
-            label: "remind-date-time",
-          }}
-          handleOnChangeInput={handleOnChangeInput}
-        />
+        <>
+          <DateTime
+            inputs={{
+              dateTime: event["remind-date-time"],
+              labelInput: "Set Reminder",
+              label: "remind-date-time",
+            }}
+            handleOnChangeInput={handleOnChangeInput}
+          />
+
+          <EventDate
+            inputs={{
+              date: event["task-date"],
+              labelInput: "Repeat Until Date",
+              label: "task-date",
+            }}
+            handleOnChangeInput={handleOnChangeInput}
+          />
+        </>
       )}
 
       {selectedTab == "TASK" && (

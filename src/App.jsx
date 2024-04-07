@@ -8,7 +8,7 @@ import { EventsContext } from "./store/events-view-context";
 import { formatDate, monthEndDate } from "./util/util";
 
 const token =
-  "eyJhbGciOiJIUzI1NiJ9.eyJwYXNzd29yZCI6InBhc3MiLCJzdWIiOiJzdW5kZXJhIiwiaWF0IjoxNzEyMjcwNzY3LCJleHAiOjE3MTIyODUxNjd9.JTfJDAjjQoKLNQSNZItbz66DV6Xw13eu7Vk9rlTe2d0";
+  "eyJhbGciOiJIUzI1NiJ9.eyJwYXNzd29yZCI6InBhc3MiLCJzdWIiOiJzdW5kZXJhIiwiaWF0IjoxNzEyNDUyODMyLCJleHAiOjE3MTI0NjcyMzJ9.uDe1fASkPULcgZC2jetck0CzGKNIJASo-DMSTOhCDPY";
 function App() {
   const [events, setEvents] = useState([]);
   return (

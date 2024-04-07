@@ -6,7 +6,7 @@ import { EventsContext } from "../store/events-view-context.jsx";
 
 export default function LeftPanel() {
   const eventsContext = useContext(EventsContext);
-  const [event, setEvent] = useState({ title: "", topic: "", priority: "" });
+  const [event, setEvent] = useState({ title: "", topic: "", link: "" });
   const [selectedTab, setSelectedTab] = useState("");
 
   function onHandleSubmit(events) {
@@ -20,7 +20,7 @@ export default function LeftPanel() {
         eventsContext.events,
         eventsContext.setEvents
       );
-      setEvent({ title: "", topic: "", priority: "" });
+      setEvent({ title: "", topic: "", link: "" });
       setSelectedTab(false);
     } catch (error) {}
   }

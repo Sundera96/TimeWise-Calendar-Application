@@ -1,6 +1,6 @@
 import "../css/date-time.css";
 export default function DateTime({ inputs, handleOnChangeInput }) {
-  const defaultDate = inputs.dateTime.toISOString().slice(0, 16);
+  const date = inputs.dateTime;
   return (
     <div className="eventTime">
       <label htmlFor={inputs.label} className="event-label">
@@ -9,7 +9,7 @@ export default function DateTime({ inputs, handleOnChangeInput }) {
       <input
         type="datetime-local"
         id={inputs.label}
-        value={defaultDate}
+        value={date}
         onChange={(event) => {
           handleOnChangeInput(inputs.label, event.target.value);
         }}
