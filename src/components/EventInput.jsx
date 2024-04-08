@@ -1,7 +1,7 @@
 import "../css/eventInput.css";
+import dayjs from "dayjs";
 import TabButton from "./TabButton.jsx";
 import EventFormFields from "./EventFormFields.jsx";
-import { converDateToDateTimeStr } from "../util/util.js";
 export default function EventInput({
   event,
   setEvent,
@@ -12,19 +12,22 @@ export default function EventInput({
   function handleOnClick(inputValue) {
     if (inputValue === "REMINDER") {
       setEvent((prevData) => {
-        return {
+        const data = {
           ...prevData,
-          ["remind-date-time"]: converDateToDateTimeStr(new Date()),
+          ["remind-date-time"]: dayjs().format("YYYY-MM-DD HH:mm"),
+          ["repeat-date"]: dayjs().format("YYYY-MM-DD"),
           ["type-tag"]: inputValue,
           ["priority"]: 1,
         };
+        return data;
       });
     } else if (inputValue === "MEETING") {
       setEvent((prevData) => {
         return {
           ...prevData,
-          ["start-date-time"]: converDateToDateTimeStr(new Date()),
-          ["end-date-time"]: converDateToDateTimeStr(new Date()),
+          ["start-date-time"]: dayjs().format("YYYY-MM-DD HH:mm"),
+          ["end-date-time"]: dayjs().format("YYYY-MM-DD HH:mm"),
+          ["repeat-date"]: dayjs().format("YYYY-MM-DD"),
           ["type-tag"]: inputValue,
           ["priority"]: 1,
         };
@@ -33,7 +36,7 @@ export default function EventInput({
       setEvent((prevData) => {
         return {
           ...prevData,
-          ["task-date"]: converDateToDateTimeStr(new Date()).substring(0, 10),
+          ["task-date"]: dayjs().format("YYYY-MM-DD"),
           ["type-tag"]: inputValue,
           ["priority"]: 1,
         };
@@ -70,7 +73,6 @@ export default function EventInput({
       };
     });
   }
-
   return (
     <div className="event-input-container">
       <menu>
@@ -105,6 +107,7 @@ export default function EventInput({
           handleOnChangeInput={handleOnChangeInput}
           handleEditorChangeInput={handleEditorChangeInput}
           selectedTab={selectedTab}
+          populateRecurrence={true}
         />
       </form>
     </div>

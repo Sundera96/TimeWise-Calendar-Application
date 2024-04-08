@@ -4,6 +4,7 @@ import { useRef, useState, useContext } from "react";
 import { EventsContext } from "../store/events-view-context.jsx";
 import "../css/day.css";
 import { updateEvent, fetchEvent } from "../util/query.js";
+import dayjs from "dayjs";
 export default function Day({
   cellValue,
   day,
@@ -12,6 +13,8 @@ export default function Day({
   monthDateState,
   ...props
 }) {
+  console.log("Day");
+  console.log(eventValues);
   const [modalEvent, setModalEvent] = useState({
     title: "",
     topic: "",
@@ -39,7 +42,7 @@ export default function Day({
     );
     console.log(eventContextData);
     eventContext.events = eventContextData;
-    monthDateState.setCurrentDate(new Date(monthDateState.currentDate));
+    monthDateState.setCurrentDate(dayjs(monthDateState.currentDate));
     dialog.current.close();
   }
 

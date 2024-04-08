@@ -6,18 +6,12 @@ import ToggleButton from "./ToggleButton.jsx";
 import { EventsContext } from "../store/events-view-context.jsx";
 import { fetchEvents } from "../util/query.js";
 import "../css/centerPanel.css";
-import { formatDate, monthEndDate } from "../util/util.js";
+import dayjs from "dayjs";
 export default function CenterPanel() {
-  const [currDate, setCurrDate] = useState(new Date(new Date().setDate(1)));
+  const [currDate, setCurrDate] = useState(dayjs().set("date", 1));
   const [isMonthView, setIsMonthView] = useState(true);
   const eventsContext = useContext(EventsContext);
   useEffect(() => {
-    let startDate;
-    if (isMonthView) {
-      startDate = new Date(currDate.setDate(1));
-    } else {
-      startDate = currDate;
-    }
     async function getAllEvents() {
       fetchEvents(
         eventsContext.selectedStartDate,
@@ -31,21 +25,22 @@ export default function CenterPanel() {
 
   function handleNextClick() {
     if (isMonthView) {
-      console.log("next getting clicked");
-      const selectedDate = new Date(currDate.setMonth(currDate.getMonth() + 1));
-      console.log("seelcted date");
-      console.log(selectedDate);
-      eventsContext.selectedStartDate = formatDate(selectedDate);
-      eventsContext.selectedEndDate = formatDate(monthEndDate(selectedDate));
-      eventsContext.events = [];
-      setCurrDate(selectedDate);
+      setCurrDate((prevDate) => {
+        const selectedDate = prevDate.add(1, "month");
+        eventsContext.selectedStartDate = selectedDate.format("YYYY-MM-DD");
+        eventsContext.selectedEndDate = selectedDate
+          .endOf("month")
+          .format("YYYY-MM-DD");
+        eventsContext.events = [];
+        return selectedDate;
+      });
     } else {
       setCurrDate((prevDate) => {
-        const date = new Date();
-        date.setFullYear(prevDate.getFullYear());
-        date.setMonth(prevDate.getMonth());
-        date.setDate(prevDate.getDate() + 7);
-        return date;
+        // const date = new Date();
+        // date.setFullYear(prevDate.getFullYear());
+        // date.setMonth(prevDate.getMonth());
+        // date.setDate(prevDate.getDate() + 7);
+        // return date;
       });
     }
   }
@@ -53,37 +48,32 @@ export default function CenterPanel() {
   function handlePrevClick() {
     if (isMonthView) {
       setCurrDate((prevDate) => {
-        const date = new Date();
-        date.setFullYear(prevDate.getFullYear());
-        date.setDate(1);
-        date.setMonth(prevDate.getMonth() - 1);
-        eventsContext.selectedStartDate = formatDate(date);
-        eventsContext.selectedEndDate = formatDate(monthEndDate(date));
+        const selectedDate = prevDate.subtract(1, "month");
+        eventsContext.selectedStartDate = selectedDate.format("YYYY-MM-DD");
+        eventsContext.selectedEndDate = selectedDate
+          .endOf("month")
+          .format("YYYY-MM-DD");
         eventsContext.events = [];
-        return date;
+        return selectedDate;
       });
     } else {
-      setCurrDate((prevDate) => {
-        const date = new Date();
-        date.setFullYear(prevDate.getFullYear());
-        date.setMonth(prevDate.getMonth());
-        date.setDate(prevDate.getDate() - 7);
-        return date;
-      });
+      // setCurrDate((prevDate) => {
+      //   const date = new Date();
+      //   date.setFullYear(prevDate.getFullYear());
+      //   date.setMonth(prevDate.getMonth());
+      //   date.setDate(prevDate.getDate() - 7);
+      //   return date;
+      // });
     }
   }
 
   function handleTodayClick() {
-    setCurrDate(new Date());
+    setCurrDate(dayjs());
   }
 
   const handleToggleClick = () => {
     setIsMonthView(!isMonthView);
   };
-  const formattedDate = currDate.toLocaleDateString("en-US", {
-    month: "long",
-    year: "numeric",
-  });
   return (
     <div className="centerPanel">
       <div className="calendarNavigation">
@@ -92,7 +82,9 @@ export default function CenterPanel() {
           <NavigationButton name="Next" onClick={handleNextClick} />
           <NavigationButton name="Today" onClick={handleTodayClick} />
         </div>
-        <h1 className="formattedDate">{formattedDate}</h1>
+        <h1 className="formattedDate">{`${currDate.format(
+          "MMMM"
+        )} ${currDate.format("YYYY")}`}</h1>
         <div>
           <ToggleButton
             onClick={handleToggleClick}

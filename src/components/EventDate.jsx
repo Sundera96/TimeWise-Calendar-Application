@@ -1,6 +1,6 @@
 import "../css/date.css";
+import dayjs from "dayjs";
 export default function EventDate({ inputs, handleOnChangeInput }) {
-  console.log("Event Date");
   const date = inputs.date;
   console.log(date);
   return (
@@ -10,7 +10,10 @@ export default function EventDate({ inputs, handleOnChangeInput }) {
         type="date"
         value={date}
         onChange={(event) => {
-          handleOnChangeInput(inputs.label, event.target.value);
+          handleOnChangeInput(
+            inputs.label,
+            dayjs(event.target.value).format("YYYY-MM-DD")
+          );
         }}
       />
     </div>

@@ -1,4 +1,5 @@
-import { formatDateTime, formatDateStr } from "./util";
+import dayjs from "dayjs";
+import { getRecurrenceCount } from "./util";
 
 export async function fetchEvent(link, token) {
   const response = await fetch(link, {
@@ -35,6 +36,7 @@ export function addEvent(
   setEventsState
 ) {
   const link = "http://localhost:8080/event/";
+  console.log("Add Event");
   console.log(event);
   event = {
     ...event,
@@ -45,26 +47,30 @@ export function addEvent(
   if (event["type-tag"] === "REMINDER") {
     event = {
       ...event,
-      ["remind-date-time"]: formatDateTime(new Date(event["remind-date-time"])),
-      ["recurrence-count"]: 1,
+      ["remind-date-time"]: event["remind-date-time"],
+      ["recurrence-count"]:
+        getRecurrenceCount(event["remind-date-time"], event["repeat-date"]) + 1,
     };
+    console.log("Recurrence");
+    console.log(event);
   } else if (event["type-tag"] === "MEETING") {
     event = {
       ...event,
-      ["start-date-time"]: formatDateTime(new Date(event["start-date-time"])),
-      ["end-date-time"]: formatDateTime(new Date(event["end-date-time"])),
-      ["recurrence-count"]: 1,
+      ["start-date-time"]: event["start-date-time"],
+      ["end-date-time"]: event["end-date-time"],
+      ["recurrence-count"]:
+        getRecurrenceCount(event["start-date-time"], event["repeat-date"]) + 1,
     };
   } else if (event["type-tag"] === "TASK") {
     console.log(event["task-date"]);
     event = {
       ...event,
-      ["task-date"]: formatDateStr(event["task-date"]),
+      ["task-date"]: event["task-date"],
     };
   } else if (event["type-tag"] === "LINK") {
     event = {
       ...event,
-      ["link-date-time"]: formatDateTime(new Date()),
+      ["link-date-time"]: dayjs().format("YYYY-MM-DD HH:mm"),
     };
   }
   console.log(event);
@@ -101,26 +107,26 @@ export async function updateEvent(
   if (event["type-tag"] === "REMINDER") {
     event = {
       ...event,
-      ["remind-date-time"]: formatDateTime(new Date(event["remind-date-time"])),
+      ["remind-date-time"]: event["remind-date-time"],
       ["recurrence-count"]: 1,
     };
   } else if (event["type-tag"] === "MEETING") {
     event = {
       ...event,
-      ["start-date-time"]: formatDateTime(new Date(event["start-date-time"])),
-      ["end-date-time"]: formatDateTime(new Date(event["end-date-time"])),
+      ["start-date-time"]: event["start-date-time"],
+      ["end-date-time"]: event["end-date-time"],
       ["recurrence-count"]: 1,
     };
   } else if (event["type-tag"] === "TASK") {
     console.log(event["task-date"]);
     event = {
       ...event,
-      ["task-date"]: formatDateStr(event["task-date"]),
+      ["task-date"]: event["task-date"],
     };
   } else if (event["type-tag"] === "LINK") {
     event = {
       ...event,
-      ["link-date-time"]: formatDateTime(new Date()),
+      ["link-date-time"]: dayjs(),
     };
   }
   const response = await fetch(link, {

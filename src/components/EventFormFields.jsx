@@ -8,6 +8,7 @@ export default function EventFormFields({
   handleOnChangeInput,
   handleEditorChangeInput,
   selectedTab,
+  populateRecurrence,
 }) {
   return (
     <>
@@ -59,6 +60,16 @@ export default function EventFormFields({
             }}
             handleOnChangeInput={handleOnChangeInput}
           />
+          {populateRecurrence && (
+            <EventDate
+              inputs={{
+                date: event["repeat-date"],
+                labelInput: "Repeat Until Date",
+                label: "repeat-date",
+              }}
+              handleOnChangeInput={handleOnChangeInput}
+            />
+          )}
         </>
       )}
 
@@ -73,14 +84,16 @@ export default function EventFormFields({
             handleOnChangeInput={handleOnChangeInput}
           />
 
-          <EventDate
-            inputs={{
-              date: event["task-date"],
-              labelInput: "Repeat Until Date",
-              label: "task-date",
-            }}
-            handleOnChangeInput={handleOnChangeInput}
-          />
+          {populateRecurrence && (
+            <EventDate
+              inputs={{
+                date: event["repeat-date"],
+                labelInput: "Repeat Until Date",
+                label: "repeat-date",
+              }}
+              handleOnChangeInput={handleOnChangeInput}
+            />
+          )}
         </>
       )}
 

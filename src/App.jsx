@@ -5,10 +5,10 @@ import LeftPanel from "./components/LeftPanel";
 import RightPanel from "./components/RightPanel";
 import "./css/container.css";
 import { EventsContext } from "./store/events-view-context";
-import { formatDate, monthEndDate } from "./util/util";
+import dayjs from "dayjs";
 
 const token =
-  "eyJhbGciOiJIUzI1NiJ9.eyJwYXNzd29yZCI6InBhc3MiLCJzdWIiOiJzdW5kZXJhIiwiaWF0IjoxNzEyNDUyODMyLCJleHAiOjE3MTI0NjcyMzJ9.uDe1fASkPULcgZC2jetck0CzGKNIJASo-DMSTOhCDPY";
+  "eyJhbGciOiJIUzI1NiJ9.eyJwYXNzd29yZCI6InBhc3MiLCJzdWIiOiJzdW5kZXJhIiwiaWF0IjoxNzEyNjA3ODY4LCJleHAiOjE3MTI2MjIyNjh9.Qg-Fm_hpP2f335_d4zbgXfYe-kphk_2Op13D_NnguHo";
 function App() {
   const [events, setEvents] = useState([]);
   return (
@@ -20,8 +20,8 @@ function App() {
             events: events,
             setEvents: setEvents,
             token: token,
-            selectedStartDate: formatDate(new Date(new Date().setDate(1))),
-            selectedEndDate: formatDate(monthEndDate(new Date())),
+            selectedStartDate: dayjs().format("YYYY-MM-DD"),
+            selectedEndDate: dayjs().endOf("month").format("YYYY-MM-DD"),
           }}
         >
           <LeftPanel />

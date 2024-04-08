@@ -2,11 +2,15 @@ import Day from "../components/Day.jsx";
 import React, { useState, useEffect, useContext } from "react";
 import { EventsContext } from "../store/events-view-context.jsx";
 import "../css/monthPanel.css";
-
+import dayjs from "dayjs";
 const week = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 export default function MonthPanel({ currDateObject, view }) {
   const eventsContext = useContext(EventsContext);
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentDate, setCurrentDate] = useState(dayjs());
+  // console.log("Current Date");
+  // console.log(currentDate.get("date"));
+  // console.log(currentDate.get("month"));
+  // console.log(currentDate.get("year"));
   // const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth());
   // const [currMonthItems, setCurrMonthItems] = useState([]);
   console.log("How Many Times?");
@@ -26,19 +30,16 @@ export default function MonthPanel({ currDateObject, view }) {
 
   function handleClickOfDayCell(date) {
     currDateObject.setCurrDate((prev) => {
-      return new Date(prev.setDate(date));
+      return prev.set("date", date);
     });
     view(false);
   }
 
   const generateCalendar = () => {
     const days = [];
-    const firstDayOfMonth = new Date(
-      currDateObject.currDate.getFullYear(),
-      currDateObject.currDate.getMonth(),
-      1
-    );
-    const startingDay = firstDayOfMonth.getDay();
+    const startingDay = currDateObject.currDate.startOf("month").get("day");
+    console.log("Month Starting Day");
+    console.log(startingDay);
     let key = 0;
     for (let i = 0; i < startingDay; i++) {
       days.push(
@@ -50,28 +51,39 @@ export default function MonthPanel({ currDateObject, view }) {
       );
     }
 
+    console.log(eventsContext.events);
+
     for (
       let i = 1;
-      i <=
-      new Date(
-        currDateObject.currDate.getFullYear(),
-        currDateObject.currDate.getMonth() + 1,
-        0
-      ).getDate();
+      i <= currDateObject.currDate.endOf("month").get("Date");
       i++
     ) {
       const reminders = eventsContext.events.filter((rem) => {
-        return new Date(rem.remindDateTime).getDate() == i;
+        return (
+          rem.eventType === "REMINDER" &&
+          dayjs(rem.remindDateTime, "YYYY-MM-DD hh:mm:ss").get("date") === i
+        );
       });
+      console.log("Reminders");
+      console.log(reminders);
       const meetings = eventsContext.events.filter((meeting) => {
-        return new Date(meeting.startDateTime).getDate() == i;
+        return (
+          meeting.eventType === "MEETING" &&
+          dayjs(meeting.startDateTime, "YYYY-MM-DD hh:mm:ss").get("date") === i
+        );
       });
       const tasks = eventsContext.events.filter((task) => {
-        return new Date(task.taskDate).getDate() == i - 1;
+        return (
+          task.eventType === "TASK" &&
+          dayjs(task.taskDate, "YYYY-MM-DD hh:mm:ss").get("date") === i
+        );
       });
 
       const links = eventsContext.events.filter((link) => {
-        return new Date(link.linkDateTime).getDate() == i;
+        return (
+          link.eventType === "LINK" &&
+          dayjs(link.linkDateTime, "YYYY-MM-DD hh:mm:ss").get("date") === i
+        );
       });
 
       const eventObj = {
@@ -92,9 +104,9 @@ export default function MonthPanel({ currDateObject, view }) {
             setCurrentDate: setCurrentDate,
           }}
           className={`day ${
-            i == currentDate.getDate() &&
-            currentDate.getMonth() == currDateObject.currDate.getMonth() &&
-            currentDate.getFullYear() == currDateObject.currDate.getFullYear()
+            i == currentDate.get("date") &&
+            currentDate.get("month") == currDateObject.currDate.get("month") &&
+            currentDate.get("year") == currDateObject.currDate.get("year")
               ? "current"
               : ""
           }`}

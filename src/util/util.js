@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 export function formatDate(date) {
   const day = String(date.getDate()).padStart(2, "0");
   const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -45,4 +47,12 @@ export function formatDateTime(str) {
   const minutes = String(date.getMinutes()).padStart(2, "0");
   const dateTimeStr = `${day}-${month}-${year} ${hours}:${minutes}`;
   return dateTimeStr;
+}
+
+export function getRecurrenceCount(dateTimeStr1, dateTimeStr2) {
+  const startDate = dayjs(dateTimeStr1);
+  const endDate = dayjs(dateTimeStr2)
+    .set("hour", startDate.get("hour"))
+    .set("minute", startDate.get("minute"));
+  return endDate.diff(startDate, "day");
 }
