@@ -10,35 +10,6 @@
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   width: 70vh;
 }
-
-/* .modal-dialog .textbox {
-   margin-bottom: 10px;
-} */
-
-.modal-dialog button {
-  background-color: #46ee97;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.modal-dialog button.SaveButton {
-  background-color: #46ee97;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.modal-dialog button:hover {
-  background-color: #13560f;
-}
-
 .modal-dialog form {
   margin-top: 10px;
   text-align: center;

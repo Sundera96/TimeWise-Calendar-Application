@@ -1,6 +1,7 @@
 import { forwardRef } from "react";
 import { createPortal } from "react-dom";
 import "../css/eventModal.css";
+import { Button } from "antd";
 import EventFormFields from "./EventFormFields";
 const EventModal = forwardRef(function EventModal(
   { eventData, setEventData, onClick, handleOnClose },
@@ -41,9 +42,12 @@ const EventModal = forwardRef(function EventModal(
           handleEditorChangeInput={handleEditorChangeInput}
           selectedTab={eventData["type-tag"]}
         />
-        <button type="button" onClick={handleOnClose}>
+        <Button type="primary" danger onClick={handleOnClose}>
           Close
-        </button>
+        </Button>
+        <Button type="primary" htmlType="submit">
+          Submit
+        </Button>
       </form>
     </dialog>,
     document.getElementById("modal")

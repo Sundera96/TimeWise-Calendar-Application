@@ -8,7 +8,7 @@ import { EventsContext } from "./store/events-view-context";
 import dayjs from "dayjs";
 
 const token =
-  "eyJhbGciOiJIUzI1NiJ9.eyJwYXNzd29yZCI6InBhc3MiLCJzdWIiOiJzdW5kZXJhIiwiaWF0IjoxNzEyNjA3ODY4LCJleHAiOjE3MTI2MjIyNjh9.Qg-Fm_hpP2f335_d4zbgXfYe-kphk_2Op13D_NnguHo";
+  "eyJhbGciOiJIUzI1NiJ9.eyJwYXNzd29yZCI6InBhc3MiLCJzdWIiOiJzdW5kZXJhIiwiaWF0IjoxNzEyNjk5MzIxLCJleHAiOjE3MTI3MTM3MjF9.m3qkJwAPvZRGphsSF2Gv0MwiJP1eiZYY1vIeOZ-vMXc";
 function App() {
   const [events, setEvents] = useState([]);
   return (

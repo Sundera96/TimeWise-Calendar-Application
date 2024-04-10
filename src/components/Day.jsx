@@ -22,10 +22,14 @@ export default function Day({
   const dialog = useRef();
   const eventContext = useContext(EventsContext);
 
-  async function handleOnClickEventPill(link) {
-    const data = await fetchEvent(link, eventContext.token);
-    setModalEvent(data);
-    dialog.current.showModal();
+  async function handleOnClickEventPill(link, caller) {
+    if (!caller) {
+      const data = await fetchEvent(link, eventContext.token);
+      setModalEvent(data);
+      dialog.current.showModal();
+    } else {
+      console.log("Task should be updated");
+    }
   }
 
   async function handleSaveModal(events, link) {

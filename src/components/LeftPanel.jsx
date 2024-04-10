@@ -3,11 +3,17 @@ import "../css/leftPanel.css";
 import EventInput from "./EventInput.jsx";
 import { addEvent } from "../util/query.js";
 import { EventsContext } from "../store/events-view-context.jsx";
+import { getEventObj } from "../util/util.js";
 
 export default function LeftPanel() {
   const eventsContext = useContext(EventsContext);
-  const [event, setEvent] = useState({ title: "", topic: "", link: "" });
-  const [selectedTab, setSelectedTab] = useState("");
+  const [event, setEvent] = useState({
+    ...getEventObj("REMINDER"),
+    ["title"]: "",
+    ["topic"]: "",
+    ["link"]: "",
+  });
+  const [selectedTab, setSelectedTab] = useState("REMINDER");
 
   function onHandleSubmit(events) {
     events.preventDefault();
@@ -20,8 +26,12 @@ export default function LeftPanel() {
         eventsContext.events,
         eventsContext.setEvents
       );
-      setEvent({ title: "", topic: "", link: "" });
-      setSelectedTab(false);
+      setEvent({
+        ...getEventObj(event["type-tag"]),
+        title: "",
+        topic: "",
+        link: "",
+      });
     } catch (error) {}
   }
 

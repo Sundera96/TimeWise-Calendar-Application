@@ -1,7 +1,6 @@
 import "../css/date-time.css";
 import dayjs from "dayjs";
 export default function DateTime({ inputs, handleOnChangeInput }) {
-  console.log(inputs.dateTime);
   const date = dayjs(inputs.dateTime, "YYYY-MM-DD HH:mm").format(
     "YYYY-MM-DDTHH:mm"
   );

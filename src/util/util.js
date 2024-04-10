@@ -1,5 +1,32 @@
 import dayjs from "dayjs";
 
+export function getEventObj(eventType) {
+  if (eventType === "REMINDER") {
+    return {
+      ["remind-date-time"]: dayjs().format("YYYY-MM-DD HH:mm"),
+      ["repeat-date"]: dayjs().format("YYYY-MM-DD"),
+      ["type-tag"]: "REMINDER",
+      ["priority"]: 1,
+    };
+  } else if (eventType === "MEETING") {
+    return {
+      ["start-date-time"]: dayjs().format("YYYY-MM-DD HH:mm"),
+      ["end-date-time"]: dayjs().format("YYYY-MM-DD HH:mm"),
+      ["repeat-date"]: dayjs().format("YYYY-MM-DD"),
+      ["type-tag"]: "MEETING",
+      ["priority"]: 1,
+    };
+  } else if (eventType === "TASK") {
+    return {
+      ["task-date"]: dayjs().format("YYYY-MM-DD"),
+      ["type-tag"]: "TASK",
+      ["priority"]: 1,
+    };
+  } else {
+    return { ["type-tag"]: "LINK", ["priority"]: 1 };
+  }
+}
+
 export function formatDate(date) {
   const day = String(date.getDate()).padStart(2, "0");
   const month = String(date.getMonth() + 1).padStart(2, "0");

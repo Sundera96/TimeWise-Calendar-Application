@@ -114,9 +114,6 @@ export default function EventFormFields({
             handleOnChangeInput={handleEditorChangeInput}
             label={"notes"}
           ></TextEditor>
-          <button type="submit" className="SaveButton">
-            Submit
-          </button>
         </>
       )}
     </>

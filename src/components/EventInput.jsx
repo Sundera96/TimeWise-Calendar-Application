@@ -1,7 +1,25 @@
 import "../css/eventInput.css";
 import dayjs from "dayjs";
-import TabButton from "./TabButton.jsx";
 import EventFormFields from "./EventFormFields.jsx";
+import { Tabs, Button } from "antd";
+const items = [
+  {
+    key: "REMINDER",
+    label: "REMINDER",
+  },
+  {
+    key: "MEETING",
+    label: "MEETING",
+  },
+  {
+    key: "TASK",
+    label: "TASK",
+  },
+  {
+    key: "LINK",
+    label: "LINK",
+  },
+];
 export default function EventInput({
   event,
   setEvent,
@@ -21,7 +39,7 @@ export default function EventInput({
         };
         return data;
       });
-    } else if (inputValue === "MEETING") {
+    } else if (inputValue === "MEETING" || inputValue === "2") {
       setEvent((prevData) => {
         return {
           ...prevData,
@@ -73,34 +91,10 @@ export default function EventInput({
       };
     });
   }
+
   return (
     <div className="event-input-container">
-      <menu>
-        <TabButton
-          onClick={handleOnClick}
-          className={selectedTab === "REMINDER" ? "currentTab" : "tab-button"}
-        >
-          REMINDER
-        </TabButton>
-        <TabButton
-          onClick={handleOnClick}
-          className={selectedTab === "TASK" ? "currentTab" : "tab-button"}
-        >
-          TASK
-        </TabButton>
-        <TabButton
-          onClick={handleOnClick}
-          className={selectedTab === "MEETING" ? "currentTab" : "tab-button"}
-        >
-          MEETING
-        </TabButton>
-        <TabButton
-          onClick={handleOnClick}
-          className={selectedTab === "LINK" ? "currentTab" : "tab-button"}
-        >
-          LINK
-        </TabButton>
-      </menu>
+      <Tabs defaultActiveKey="1" items={items} onChange={handleOnClick} />
       <form onSubmit={onHandleSubmit}>
         <EventFormFields
           event={event}
@@ -109,6 +103,11 @@ export default function EventInput({
           selectedTab={selectedTab}
           populateRecurrence={true}
         />
+        {selectedTab !== "" && (
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        )}
       </form>
     </div>
   );

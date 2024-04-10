@@ -75,7 +75,7 @@ export default function MonthPanel({ currDateObject, view }) {
       const tasks = eventsContext.events.filter((task) => {
         return (
           task.eventType === "TASK" &&
-          dayjs(task.taskDate, "YYYY-MM-DD hh:mm:ss").get("date") === i
+          dayjs(task.taskDate, "YYYY-MM-DD").get("date") === i
         );
       });
 

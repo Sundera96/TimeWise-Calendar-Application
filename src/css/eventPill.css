@@ -1,3 +1,7 @@
+.EventPill {
+  display: flex;
+  justify-content: space-around;
+}
 .EventPill.REMINDER {
   background-color: #ffcc66;
   color: black;
