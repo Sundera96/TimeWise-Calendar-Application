@@ -8,7 +8,7 @@ import { EventsContext } from "./store/events-view-context";
 import dayjs from "dayjs";
 
 const token =
-  "eyJhbGciOiJIUzI1NiJ9.eyJwYXNzd29yZCI6InBhc3MiLCJzdWIiOiJzdW5kZXJhIiwiaWF0IjoxNzEyNjk5MzIxLCJleHAiOjE3MTI3MTM3MjF9.m3qkJwAPvZRGphsSF2Gv0MwiJP1eiZYY1vIeOZ-vMXc";
+  "eyJhbGciOiJIUzI1NiJ9.eyJwYXNzd29yZCI6InBhc3MiLCJzdWIiOiJzdW5kZXJhIiwiaWF0IjoxNzEyNzkwOTkwLCJleHAiOjE3MTI4MDUzOTB9.orRd5RM4DIedc13kM7gb7ksZWDBFqQ-nORYnXx-DvHQ";
 function App() {
   const [events, setEvents] = useState([]);
   return (
@@ -20,7 +20,7 @@ function App() {
             events: events,
             setEvents: setEvents,
             token: token,
-            selectedStartDate: dayjs().format("YYYY-MM-DD"),
+            selectedStartDate: dayjs().set("date", 1).format("YYYY-MM-DD"),
             selectedEndDate: dayjs().endOf("month").format("YYYY-MM-DD"),
           }}
         >

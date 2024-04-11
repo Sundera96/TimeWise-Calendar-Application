@@ -15,17 +15,13 @@ export default function MonthPanel({ currDateObject, view }) {
   // const [currMonthItems, setCurrMonthItems] = useState([]);
   console.log("How Many Times?");
   useEffect(() => {
-    //Update the calendar at the beginning of each month
-    // const intervalId = setInterval(() => {
-    //   const now = new Date();
-    //   if (now.getDate() !== currDateObject.currDate.getDate()) {
-    //     setCurrentDate(now);
-    //   }
-    // }, 60000); // Check every minute for month change
-    // return () => clearInterval(intervalId); // Clear interval on component unmount
-    // /**
-    //  * If current month changes execute data fetch
-    //  */
+    const intervalId = setInterval(() => {
+      const now = dayjs();
+      if (now.get("date") !== currentDate.get("date")) {
+        setCurrentDate(now);
+      }
+    }, 60000); // Check every minute for month change
+    return () => clearInterval(intervalId); // Clear interval on component unmount
   }, []);
 
   function handleClickOfDayCell(date) {
@@ -112,7 +108,7 @@ export default function MonthPanel({ currDateObject, view }) {
           }`}
         />
       );
-      key++;
+      key = key + 1;
     }
     return days;
   };

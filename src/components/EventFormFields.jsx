@@ -3,12 +3,14 @@ import DateTime from "./DateTime.jsx";
 import TextEditor from "./TextEditor.jsx";
 import EventDate from "./EventDate.jsx";
 import Dropdown from "./Dropdown.jsx";
+import { Checkbox } from "antd";
 export default function EventFormFields({
   event,
   handleOnChangeInput,
   handleEditorChangeInput,
   selectedTab,
   populateRecurrence,
+  calledBy,
 }) {
   return (
     <>
@@ -98,14 +100,24 @@ export default function EventFormFields({
       )}
 
       {selectedTab == "TASK" && (
-        <EventDate
-          inputs={{
-            date: event["task-date"],
-            labelInput: "Task Date",
-            label: "task-date",
-          }}
-          handleOnChangeInput={handleOnChangeInput}
-        />
+        <>
+          <EventDate
+            inputs={{
+              date: event["task-date"],
+              labelInput: "Task Date",
+              label: "task-date",
+            }}
+            handleOnChangeInput={handleOnChangeInput}
+          />
+          <Checkbox
+            checked={event["habit-tracker"]}
+            onChange={(event) => {
+              handleOnChangeInput("habit-tracker", event.target.checked);
+            }}
+          >
+            Build Your Routine?
+          </Checkbox>
+        </>
       )}
       {selectedTab != "" && (
         <>

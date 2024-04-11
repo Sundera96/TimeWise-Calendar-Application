@@ -27,6 +27,14 @@ export function getEventObj(eventType) {
   }
 }
 
+export function getEventDateTime(event, type) {
+  if (type === "REMINDER") {
+    return event.remindDateTime;
+  } else if (type === "MEETING") {
+    return event.startDateTime;
+  }
+}
+
 export function formatDate(date) {
   const day = String(date.getDate()).padStart(2, "0");
   const month = String(date.getMonth() + 1).padStart(2, "0");

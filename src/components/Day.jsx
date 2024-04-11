@@ -80,13 +80,7 @@ export default function Day({
             ([_, val]) =>
               val &&
               val.map((item) => (
-                <EventPill
-                  key={item.eventId}
-                  title={item.title}
-                  link={item.links[0].href}
-                  type={item.eventType}
-                  onClick={handleOnClickEventPill}
-                />
+                <EventPill event={item} onClick={handleOnClickEventPill} />
               ))
           )}
       </div>

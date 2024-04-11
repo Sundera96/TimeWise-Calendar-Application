@@ -102,6 +102,7 @@ export default function EventInput({
           handleEditorChangeInput={handleEditorChangeInput}
           selectedTab={selectedTab}
           populateRecurrence={true}
+          calledBy={"LEFT_PANEL"}
         />
         {selectedTab !== "" && (
           <Button type="primary" htmlType="submit">

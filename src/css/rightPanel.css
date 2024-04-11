@@ -1,13 +1,4 @@
 .RightPanel {
   grid-column: 3;
-  height: 90vh; /* Sets height to 100% of viewport height */
-  float: right; /* Positions the element to the left */
-  display: flex; /* Enables vertical centering of content */
-  align-items: center; /* Aligns content vertically within the panel */
-  justify-content: center; /* Aligns content horizontally within the panel (optional) */
-}
-
-.RightPanel p {
-  color: rgb(40, 166, 14); /* Sets text color to red */
-  text-align: center; /* Aligns text horizontally within the panel (optional for justification) */
+  width: 100%;
 }
