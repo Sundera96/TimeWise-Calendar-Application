@@ -41,8 +41,8 @@ export default function CenterPanel() {
         title={"CURRENT TASK"}
         data={getCurrentTaskDataFromContext()}
       ></MyList>
-      <MyList title={"UNCOMPLETED TASK"} data={getUncompletedTask()}></MyList>
-      <MyList title={"Routine Tracker"} data={getUncompletedTask()}></MyList>
+      <MyList title={"UNFINISHED TASK"} data={getUncompletedTask()}></MyList>
+      <MyList title={"ROUTINE TRACKER"} data={getUncompletedTask()}></MyList>
     </div>
   );
 }
