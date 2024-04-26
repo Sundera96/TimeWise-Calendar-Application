@@ -128,7 +128,8 @@ export async function updateEvent(
   } else if (event["type-tag"] === "LINK") {
     event = {
       ...event,
-      ["link-date-time"]: dayjs(),
+      ["link-date-time"]:
+        event["link-date-time"] || dayjs().format("YYYY-MM-DD HH:mm"),
     };
   }
   const response = await fetch(link, {

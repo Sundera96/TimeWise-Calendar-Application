@@ -23,6 +23,8 @@ export default function Day({
   async function handleOnClickEventPill(link, caller) {
     if (!caller) {
       const data = await fetchEvent(link, eventContext.token);
+      console.log("Retrieving data");
+      console.log(data);
       setModalEvent(data);
       dialog.current.showModal();
     } else {
