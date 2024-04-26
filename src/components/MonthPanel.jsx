@@ -20,7 +20,7 @@ export default function MonthPanel({ currDateObject, view }) {
       if (now.get("date") !== currentDate.get("date")) {
         setCurrentDate(now);
       }
-    }, 60000); // Check every minute for month change
+    }, 60000); // Check every minute for current date
     return () => clearInterval(intervalId); // Clear interval on component unmount
   }, []);
 

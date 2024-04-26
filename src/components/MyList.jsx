@@ -1,5 +1,7 @@
 import { List, Checkbox } from "antd";
-export default function MyList({ title, data }) {
+export default function MyList({ title, data, handleOnClickEventPill }) {
+  console.log("Mu List");
+  console.log(data);
   return (
     <>
       <p style={{ textAlign: "center" }}>{title}</p>
@@ -17,7 +19,11 @@ export default function MyList({ title, data }) {
           renderItem={(item) => (
             <List.Item key={item.eventId}>
               <List.Item.Meta
-                title={<a href="https://ant.design">{item.title}</a>}
+                title={
+                  <a onClick={() => handleOnClickEventPill(item.links[0].href)}>
+                    {item.title}
+                  </a>
+                }
               />
               <div>
                 <Checkbox />

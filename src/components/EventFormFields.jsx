@@ -4,6 +4,9 @@ import TextEditor from "./TextEditor.jsx";
 import EventDate from "./EventDate.jsx";
 import Dropdown from "./Dropdown.jsx";
 import { Checkbox } from "antd";
+import DropdownTags from "./DropDownTags.jsx";
+import { EventsContext } from "../store/events-view-context.jsx";
+import { useContext } from "react";
 export default function EventFormFields({
   event,
   handleOnChangeInput,
@@ -12,6 +15,7 @@ export default function EventFormFields({
   populateRecurrence,
   calledBy,
 }) {
+  const eventsContext = useContext(EventsContext);
   return (
     <>
       {selectedTab != "" && (
@@ -22,11 +26,12 @@ export default function EventFormFields({
             value={event["title"]}
             handleOnChangeInput={handleOnChangeInput}
           />
-          <TextBox
+          <DropdownTags
             labelInput={"Tag"}
             label={"topic"}
             value={event["topic"]}
             handleOnChangeInput={handleOnChangeInput}
+            topics={eventsContext.topics}
           />
           <Dropdown
             labelInput={"Priority"}
@@ -109,14 +114,16 @@ export default function EventFormFields({
             }}
             handleOnChangeInput={handleOnChangeInput}
           />
-          <Checkbox
-            checked={event["habit-tracker"]}
-            onChange={(event) => {
-              handleOnChangeInput("habit-tracker", event.target.checked);
-            }}
-          >
-            Build Your Routine?
-          </Checkbox>
+          {calledBy && (
+            <Checkbox
+              checked={event["habit-tracker"]}
+              onChange={(event) => {
+                handleOnChangeInput("habit-tracker", event.target.checked);
+              }}
+            >
+              Build Your Routine?
+            </Checkbox>
+          )}
         </>
       )}
       {selectedTab != "" && (

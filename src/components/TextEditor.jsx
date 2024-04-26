@@ -7,6 +7,9 @@ export default function TextEditor({
   label,
 }) {
   const editorRef = useRef();
+  if (!editorInput) {
+    editorInput = "";
+  }
   return (
     <div className="textEditorContainer">
       <Editor
@@ -19,7 +22,8 @@ export default function TextEditor({
         init={{
           menubar: false,
           plugins: "autolink link lists wordcount autolink",
-          toolbar: "bold italic underline insertLink bullist ",
+          toolbar:
+            "bold italic underline insertLink bullist alignleft aligncenter alignright",
           content_style: `
                 body {
                     background: #afdec9;

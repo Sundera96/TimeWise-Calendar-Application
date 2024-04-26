@@ -32,6 +32,8 @@ export function getEventDateTime(event, type) {
     return event.remindDateTime;
   } else if (type === "MEETING") {
     return event.startDateTime;
+  } else if (type === "TASK") {
+    return event.taskDate;
   }
 }
 

@@ -6,4 +6,9 @@ export const EventsContext = createContext({
   setToken: {},
   selectedStartDate: undefined,
   selectedEndDate: undefined,
+  topics: [],
+  setTopics: {},
+  unfinishedTask: [],
+  routineTask: [],
+  setRightPanelTask: {},
 });

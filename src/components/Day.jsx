@@ -13,11 +13,9 @@ export default function Day({
   monthDateState,
   ...props
 }) {
-  console.log("Day");
-  console.log(eventValues);
   const [modalEvent, setModalEvent] = useState({
     title: "",
-    topic: "",
+    topic: "DEFAULT",
   });
   const dialog = useRef();
   const eventContext = useContext(EventsContext);

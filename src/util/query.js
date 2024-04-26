@@ -61,6 +61,8 @@ export function addEvent(
       ["recurrence-count"]:
         getRecurrenceCount(event["start-date-time"], event["repeat-date"]) + 1,
     };
+    console.log("Meeting about to get added");
+    console.log(event);
   } else if (event["type-tag"] === "TASK") {
     console.log(event["task-date"]);
     event = {
@@ -159,4 +161,22 @@ export async function updateEvent(
   //   });
   //   return events.concat(data);
   // });
+}
+
+export async function getAllTopics(token, setTopicState) {
+  fetch(`http://localhost:8080/event/tags`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      if (!data.includes("DEFAULT")) {
+        data = data.concat("DEFAULT");
+      }
+      setTopicState(data);
+    });
 }

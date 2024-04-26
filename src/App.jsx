@@ -11,7 +11,7 @@ import dayjs from "dayjs";
 function App() {
   const [events, setEvents] = useState([]);
   const [token, setToken] = useState("");
-  console.log(token);
+  const [topics, setTopics] = useState(["DEFAULT"]);
   return (
     <>
       <Header />
@@ -24,6 +24,10 @@ function App() {
             setToken: setToken,
             selectedStartDate: dayjs().set("date", 1).format("YYYY-MM-DD"),
             selectedEndDate: dayjs().endOf("month").format("YYYY-MM-DD"),
+            topics: topics,
+            setTopics: setTopics,
+            unfinishedTask: [],
+            routineTask: [],
           }}
         >
           {token === "" && <SignUpOrLogin />}

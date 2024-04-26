@@ -1,7 +1,7 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import "../css/leftPanel.css";
 import EventInput from "./EventInput.jsx";
-import { addEvent } from "../util/query.js";
+import { addEvent, getAllTopics } from "../util/query.js";
 import { EventsContext } from "../store/events-view-context.jsx";
 import { getEventObj } from "../util/util.js";
 
@@ -10,12 +10,16 @@ export default function LeftPanel() {
   const [event, setEvent] = useState({
     ...getEventObj("REMINDER"),
     ["title"]: "",
-    ["topic"]: "",
+    ["topic"]: "DEFAULT",
     ["link"]: "",
   });
   const [selectedTab, setSelectedTab] = useState("REMINDER");
-
+  useEffect(() => {
+    getAllTopics(eventsContext.token, eventsContext.setTopics);
+  }, []);
   function onHandleSubmit(events) {
+    console.log("Meting Event Below");
+    console.log(event);
     events.preventDefault();
     try {
       addEvent(
@@ -29,7 +33,7 @@ export default function LeftPanel() {
       setEvent({
         ...getEventObj(event["type-tag"]),
         title: "",
-        topic: "",
+        topic: "DEFAULT",
         link: "",
       });
     } catch (error) {}
