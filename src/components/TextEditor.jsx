@@ -21,7 +21,7 @@ export default function TextEditor({
         apiKey="yrts0vwgndyeh7evrtmrr652qrug4to4qd8cvub6wt1by4mw"
         init={{
           menubar: false,
-          plugins: "autolink link lists wordcount autolink",
+          plugins: "autolink link lists wordcount",
           toolbar:
             "bold italic underline insertLink bullist alignleft aligncenter alignright",
           content_style: `

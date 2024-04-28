@@ -8,8 +8,11 @@ export default function LoginForm({ handleSignUpClick }) {
     try {
       const tokenObj = await userLogin(values);
       console.log("token string?");
+      localStorage.setItem("timewise-token", tokenObj["token"]);
       eventsContext.setToken(tokenObj["token"]);
-    } catch (ex) {}
+    } catch (ex) {
+      localStorage.removeItem("timewise-token");
+    }
   }
 
   return (

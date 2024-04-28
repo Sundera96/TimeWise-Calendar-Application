@@ -3,7 +3,7 @@ import "../css/signUpOrLogin.css";
 import SignUpForm from "./SignUpForm";
 import LoginForm from "./LoginForm";
 export default function SignUpOrLogin() {
-  const [isSignUp, setIsSignUp] = useState(true);
+  const [isSignUp, setIsSignUp] = useState(false);
 
   const handleSignUpClick = () => {
     setIsSignUp(true);

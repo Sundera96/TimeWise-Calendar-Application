@@ -132,6 +132,8 @@ export async function updateEvent(
         event["link-date-time"] || dayjs().format("YYYY-MM-DD HH:mm"),
     };
   }
+  console.log("Check Task update");
+  console.log(event);
   const response = await fetch(link, {
     method: "POST",
     body: JSON.stringify(event),

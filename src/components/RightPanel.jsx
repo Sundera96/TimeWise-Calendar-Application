@@ -60,8 +60,36 @@ export default function RightPanel() {
       eventsContext.events
     );
     eventsContext.events = eventContextData;
-    monthDateState.setCurrentDate(dayjs(monthDateState.currentDate));
     dialog.current.close();
+  }
+
+  async function handleCheckBox(isChecked, resourceLink) {
+    let taskExpiryDate;
+    if (isChecked) {
+      taskExpiryDate = dayjs().format("YYYY-MM-DD HH:mm");
+    } else {
+      taskExpiryDate = null;
+    }
+    let data = await fetchEvent(resourceLink, eventsContext.token);
+    data = { ...data, ["expiry-date-time"]: taskExpiryDate };
+    const eventContextData = await updateEvent(
+      data,
+      eventsContext.token,
+      eventsContext.selectedStartDate,
+      eventsContext.selectedEndDate,
+      data["update"].href,
+      eventsContext.events
+    );
+    eventsContext.events = eventContextData;
+    eventsContext.unfinishedTask = eventsContext.unfinishedTask.filter(
+      (task) => {
+        return task.eventId !== data.eventId;
+      }
+    );
+    setEventObjs({
+      unfinishedTask: eventsContext.unfinishedTask,
+      routineTask: eventObjs.routineTask,
+    });
   }
 
   function handleOnClose() {
@@ -91,11 +119,13 @@ export default function RightPanel() {
         title={"CURRENT TASK"}
         data={getCurrentTaskDataFromContext()}
         handleOnClickEventPill={handleOnClickEventPill}
+        handleCheckBox={handleCheckBox}
       ></MyList>
       <MyList
         title={"UNFINISHED TASK"}
         data={eventObjs.unfinishedTask}
         handleOnClickEventPill={handleOnClickEventPill}
+        handleCheckBox={handleCheckBox}
       ></MyList>
       <MyList
         title={"ROUTINE TRACKER"}

@@ -7,11 +7,29 @@ import "./css/container.css";
 import { EventsContext } from "./store/events-view-context";
 import SignUpOrLogin from "./components/SignUpOrLogin";
 import dayjs from "dayjs";
+import { validateToken } from "./util/userRegistration";
 
 function App() {
   const [events, setEvents] = useState([]);
   const [token, setToken] = useState("");
   const [topics, setTopics] = useState(["DEFAULT"]);
+
+  useEffect(() => {
+    const localStorageToken = localStorage.getItem("timewise-token");
+    async function validate() {
+      if (localStorageToken && localStorageToken != "") {
+        try {
+          await validateToken(localStorageToken);
+          setToken(localStorageToken);
+        } catch (e) {
+          setToken("");
+          localStorage.removeItem("timewise-token");
+        }
+      }
+    }
+    validate();
+  }, []);
+
   return (
     <>
       <Header />

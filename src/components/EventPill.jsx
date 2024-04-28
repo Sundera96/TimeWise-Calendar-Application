@@ -4,6 +4,7 @@ import { useEffect, useContext } from "react";
 import { EventsContext } from "../store/events-view-context.jsx";
 import { getEventDateTime } from "../util/util.js";
 import { notification } from "antd";
+import notifySound from "../assets/sound/bubble-sound-43207.mp3";
 export default function EventPill({ event, onClick }) {
   const eventContext = useContext(EventsContext);
   const [api] = notification.useNotification();
@@ -43,6 +44,7 @@ export default function EventPill({ event, onClick }) {
           const now = dayjs();
           console.log("iss checkig");
           if (now.diff(eventDateTime) > 0) {
+            new Audio(notifySound).play();
             openNotification();
             clearInterval(interval);
           }
@@ -53,15 +55,19 @@ export default function EventPill({ event, onClick }) {
   } else if (event.eventType === "TASK") {
     useEffect(() => {
       const date = dayjs();
-      if (date.format("YYYY-MM-DD") > eventDateTime.format("YYYY-MM-DD")) {
+      if (
+        !event.expiredDateTime &&
+        date.format("YYYY-MM-DD") > eventDateTime.format("YYYY-MM-DD")
+      ) {
         eventContext.setRightPanelTask({
           unfinishedTask: eventContext.unfinishedTask.concat(event),
           routineTask: eventContext.routineTask,
         });
-      } else {
+      } else if (!event.expiredDateTime) {
         const interval = setInterval(() => {
           console.log("iss checkig");
           if (date.format("YYYY-MM-DD") > eventDateTime.format("YYYY-MM-DD")) {
+            new Audio(notifySound).play();
             openNotification();
             clearInterval(interval);
             eventContext.setRightPanelTask({
