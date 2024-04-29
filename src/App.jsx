@@ -13,7 +13,6 @@ function App() {
   const [events, setEvents] = useState([]);
   const [token, setToken] = useState("");
   const [topics, setTopics] = useState(["DEFAULT"]);
-
   useEffect(() => {
     const localStorageToken = localStorage.getItem("timewise-token");
     async function validate() {

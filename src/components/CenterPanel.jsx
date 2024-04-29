@@ -9,10 +9,24 @@ import "../css/centerPanel.css";
 import { Input, Button, Form } from "antd";
 import dayjs from "dayjs";
 export default function CenterPanel() {
-  const [currDate, setCurrDate] = useState(dayjs().set("date", 1));
-  const [isMonthView, setIsMonthView] = useState(true);
+  const [currentView, setCurrentView] = useState({
+    viewDate: dayjs().set("date", 1),
+    viewType: "MONTH",
+  });
+  const [todayDate, setTodayDate] = useState(dayjs());
   const eventsContext = useContext(EventsContext);
   const formRef = useRef();
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      const now = dayjs();
+      if (now.get("date") !== todayDate.get("date")) {
+        setTodayDate(now);
+      }
+    }, 60000); // Check every minute for current date
+    return () => clearInterval(intervalId); // Clear interval on component unmount
+  }, []);
+
   useEffect(() => {
     fetchEvents(
       eventsContext.selectedStartDate,
@@ -20,49 +34,42 @@ export default function CenterPanel() {
       eventsContext.setEvents,
       eventsContext.token
     );
-  }, [isMonthView, currDate]);
+  }, [currentView]);
+
+  function handleClickOfDayCell(date) {
+    setCurrentView({
+      viewDate: currentView.viewDate.set("date", date),
+      viewType: "WEEK",
+    });
+  }
 
   function handleNextClick() {
-    if (isMonthView) {
-      setCurrDate((prevDate) => {
-        const selectedDate = prevDate.add(1, "month");
+    if (currentView.viewType === "MONTH") {
+      setCurrentView((prevView) => {
+        const selectedDate = prevView.viewDate.add(1, "month").set("date", 1);
         eventsContext.selectedStartDate = selectedDate.format("YYYY-MM-DD");
         eventsContext.selectedEndDate = selectedDate
           .endOf("month")
           .format("YYYY-MM-DD");
         eventsContext.events = [];
-        return selectedDate;
+        return { viewDate: selectedDate, viewType: prevView.viewType };
       });
     } else {
-      setCurrDate((prevDate) => {
-        // const date = new Date();
-        // date.setFullYear(prevDate.getFullYear());
-        // date.setMonth(prevDate.getMonth());
-        // date.setDate(prevDate.getDate() + 7);
-        // return date;
-      });
     }
   }
 
   function handlePrevClick() {
     if (isMonthView) {
-      setCurrDate((prevDate) => {
-        const selectedDate = prevDate.subtract(1, "month");
+      setCurrentView((prevView) => {
+        const selectedDate = prevView.viewDate.subtract(1, "month");
         eventsContext.selectedStartDate = selectedDate.format("YYYY-MM-DD");
         eventsContext.selectedEndDate = selectedDate
           .endOf("month")
           .format("YYYY-MM-DD");
         eventsContext.events = [];
-        return selectedDate;
+        return { viewDate: selectedDate, viewType: prevView.viewType };
       });
     } else {
-      // setCurrDate((prevDate) => {
-      //   const date = new Date();
-      //   date.setFullYear(prevDate.getFullYear());
-      //   date.setMonth(prevDate.getMonth());
-      //   date.setDate(prevDate.getDate() - 7);
-      //   return date;
-      // });
     }
   }
 
@@ -74,11 +81,19 @@ export default function CenterPanel() {
       .set("date", 1)
       .endOf("month")
       .format("YYYY-MM-DD");
-    setCurrDate(dayjs().set("date", 1));
+    setCurrentView((prevView) => {
+      return { viewDate: dayjs(), viewType: prevView.viewType };
+    });
   }
 
   const handleToggleClick = () => {
-    setIsMonthView(!isMonthView);
+    console.log(currentView.viewType);
+    const viewType = currentView.viewType === "MONTH" ? "WEEK" : "MONTH";
+    console.log("Sundera");
+    console.log(viewType);
+    setCurrentView((prevView) => {
+      return { viewDate: prevView.viewDate, viewType: viewType };
+    });
   };
 
   function handleSubmitTopic(values) {
@@ -99,9 +114,9 @@ export default function CenterPanel() {
           </div>
         </div>
         <div>
-          <h1 className="formattedDate">{`${currDate.format(
+          <h1 className="formattedDate">{`${currentView.viewDate.format(
             "MMMM"
-          )} ${currDate.format("YYYY")}`}</h1>
+          )} ${currentView.viewDate.format("YYYY")}`}</h1>
         </div>
         <div>
           <Form layout="inline" onFinish={handleSubmitTopic} ref={formRef}>
@@ -116,18 +131,22 @@ export default function CenterPanel() {
         <div>
           <ToggleButton
             onClick={handleToggleClick}
-            isActive={isMonthView}
+            isActive={currentView.viewType === "MONTH"}
           ></ToggleButton>
         </div>
       </div>
 
-      {isMonthView && (
+      {currentView.viewType === "MONTH" && (
         <MonthPanel
-          currDateObject={{ currDate: currDate, setCurrDate: setCurrDate }}
-          view={setIsMonthView}
+          todayDate={todayDate}
+          currentDate={currentView.viewDate}
+          currentViewState={setCurrentView}
+          handleClickOfDayCell={handleClickOfDayCell}
         />
       )}
-      {!isMonthView && <WeekPanel selectedDate={currDate} />}
+      {currentView.viewType === "WEEK" && (
+        <WeekPanel selectedDate={currentView.viewDate} />
+      )}
     </div>
   );
 }

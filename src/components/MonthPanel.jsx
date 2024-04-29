@@ -4,38 +4,16 @@ import { EventsContext } from "../store/events-view-context.jsx";
 import "../css/monthPanel.css";
 import dayjs from "dayjs";
 const week = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-export default function MonthPanel({ currDateObject, view }) {
+export default function MonthPanel({
+  todayDate,
+  currentDate,
+  currentViewState,
+  handleClickOfDayCell,
+}) {
   const eventsContext = useContext(EventsContext);
-  const [currentDate, setCurrentDate] = useState(dayjs());
-  // console.log("Current Date");
-  // console.log(currentDate.get("date"));
-  // console.log(currentDate.get("month"));
-  // console.log(currentDate.get("year"));
-  // const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth());
-  // const [currMonthItems, setCurrMonthItems] = useState([]);
-  console.log("How Many Times?");
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      const now = dayjs();
-      if (now.get("date") !== currentDate.get("date")) {
-        setCurrentDate(now);
-      }
-    }, 60000); // Check every minute for current date
-    return () => clearInterval(intervalId); // Clear interval on component unmount
-  }, []);
-
-  function handleClickOfDayCell(date) {
-    currDateObject.setCurrDate((prev) => {
-      return prev.set("date", date);
-    });
-    view(false);
-  }
-
   const generateCalendar = () => {
     const days = [];
-    const startingDay = currDateObject.currDate.startOf("month").get("day");
-    console.log("Month Starting Day");
-    console.log(startingDay);
+    const startingDay = currentDate.startOf("month").get("day");
     let key = 0;
     for (let i = 0; i < startingDay; i++) {
       days.push(
@@ -47,21 +25,14 @@ export default function MonthPanel({ currDateObject, view }) {
       );
     }
 
-    console.log(eventsContext.events);
-
-    for (
-      let i = 1;
-      i <= currDateObject.currDate.endOf("month").get("Date");
-      i++
-    ) {
+    for (let i = 1; i <= currentDate.endOf("month").get("Date"); i++) {
       const reminders = eventsContext.events.filter((rem) => {
         return (
           rem.eventType === "REMINDER" &&
           dayjs(rem.remindDateTime, "YYYY-MM-DD hh:mm:ss").get("date") === i
         );
       });
-      console.log("Reminders");
-      console.log(reminders);
+
       const meetings = eventsContext.events.filter((meeting) => {
         return (
           meeting.eventType === "MEETING" &&
@@ -97,12 +68,12 @@ export default function MonthPanel({ currDateObject, view }) {
           onClick={handleClickOfDayCell}
           monthDateState={{
             currentDate: currentDate,
-            setCurrentDate: setCurrentDate,
+            setCurrentDate: currentViewState,
           }}
           className={`day ${
-            i == currentDate.get("date") &&
-            currentDate.get("month") == currDateObject.currDate.get("month") &&
-            currentDate.get("year") == currDateObject.currDate.get("year")
+            i == todayDate.get("date") &&
+            currentDate.get("month") == todayDate.get("month") &&
+            currentDate.get("year") == todayDate.get("year")
               ? "current"
               : ""
           }`}
@@ -112,7 +83,6 @@ export default function MonthPanel({ currDateObject, view }) {
     }
     return days;
   };
-
   return (
     <div className="CenterPanel">
       <div className="Calendar">{generateCalendar()}</div>

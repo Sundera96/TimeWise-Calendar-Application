@@ -23,7 +23,6 @@ export default function Day({
   async function handleOnClickEventPill(link, caller) {
     if (!caller) {
       const data = await fetchEvent(link, eventContext.token);
-      console.log("Retrieving data");
       console.log(data);
       setModalEvent(data);
       dialog.current.showModal();
@@ -34,8 +33,6 @@ export default function Day({
 
   async function handleSaveModal(events, link) {
     events.preventDefault();
-    console.log("INside Handle Save Modal");
-    console.log(eventContext.events);
     const eventContextData = await updateEvent(
       modalEvent,
       eventContext.token,
@@ -46,7 +43,10 @@ export default function Day({
     );
     console.log(eventContextData);
     eventContext.events = eventContextData;
-    monthDateState.setCurrentDate(dayjs(monthDateState.currentDate));
+    monthDateState.setCurrentDate({
+      viewDate: dayjs(monthDateState.currentDate),
+      viewType: "MONTH",
+    });
     dialog.current.close();
   }
 
