@@ -145,7 +145,7 @@ export default function CenterPanel() {
         />
       )}
       {currentView.viewType === "WEEK" && (
-        <WeekPanel selectedDate={currentView.viewDate} />
+        <WeekPanel selectedDate={currentView.viewDate} todayDate={todayDate} />
       )}
     </div>
   );

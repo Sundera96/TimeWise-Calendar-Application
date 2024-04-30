@@ -41,7 +41,7 @@ export default function Day({
       link,
       eventContext.events
     );
-    console.log(eventContextData);
+
     eventContext.events = eventContextData;
     monthDateState.setCurrentDate({
       viewDate: dayjs(monthDateState.currentDate),
