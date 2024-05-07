@@ -18,8 +18,6 @@ export default function LeftPanel() {
     getAllTopics(eventsContext.token, eventsContext.setTopics);
   }, []);
   function onHandleSubmit(events) {
-    console.log("Meting Event Below");
-    console.log(event);
     events.preventDefault();
     try {
       addEvent(
@@ -30,12 +28,6 @@ export default function LeftPanel() {
         eventsContext.events,
         eventsContext.setEvents
       );
-      setEvent({
-        ...getEventObj(event["type-tag"]),
-        title: "",
-        topic: "DEFAULT",
-        link: "",
-      });
     } catch (error) {}
   }
 

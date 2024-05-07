@@ -37,6 +37,13 @@ export default function CenterPanel() {
   }, [currentView]);
 
   function handleClickOfDayCell(date) {
+    eventsContext.selectedStartDate = currentView.viewDate
+      .startOf("week")
+      .format("YYYY-MM-DD");
+    eventsContext.selectedEndDate = currentView.viewDate
+      .add(6, "day")
+      .format("YYYY-MM-DD");
+    eventsContext.events = [];
     setCurrentView({
       viewDate: currentView.viewDate.set("date", date),
       viewType: "WEEK",
@@ -55,13 +62,26 @@ export default function CenterPanel() {
         return { viewDate: selectedDate, viewType: prevView.viewType };
       });
     } else {
+      setCurrentView((prevView) => {
+        const selectedDate = prevView.viewDate.add(1, "week");
+        eventsContext.selectedStartDate = selectedDate
+          .startOf("week")
+          .format("YYYY-MM-DD");
+        eventsContext.selectedEndDate = selectedDate
+          .add(6, "day")
+          .format("YYYY-MM-DD");
+        eventsContext.events = [];
+        return { viewDate: selectedDate, viewType: prevView.viewType };
+      });
     }
   }
 
   function handlePrevClick() {
-    if (isMonthView) {
+    if (currentView.viewType === "MONTH") {
       setCurrentView((prevView) => {
-        const selectedDate = prevView.viewDate.subtract(1, "month");
+        const selectedDate = prevView.viewDate
+          .subtract(1, "month")
+          .set("date", 1);
         eventsContext.selectedStartDate = selectedDate.format("YYYY-MM-DD");
         eventsContext.selectedEndDate = selectedDate
           .endOf("month")
@@ -70,27 +90,64 @@ export default function CenterPanel() {
         return { viewDate: selectedDate, viewType: prevView.viewType };
       });
     } else {
+      setCurrentView((prevView) => {
+        const selectedDate = prevView.viewDate.subtract(1, "week");
+        eventsContext.selectedStartDate = selectedDate
+          .startOf("week")
+          .format("YYYY-MM-DD");
+        eventsContext.selectedEndDate = selectedDate
+          .add(6, "day")
+          .format("YYYY-MM-DD");
+        eventsContext.events = [];
+        return { viewDate: selectedDate, viewType: prevView.viewType };
+      });
     }
   }
 
   function handleTodayClick() {
-    eventsContext.selectedStartDate = dayjs()
-      .set("date", 1)
-      .format("YYYY-MM-DD");
-    eventsContext.selectedEndDate = dayjs()
-      .set("date", 1)
-      .endOf("month")
-      .format("YYYY-MM-DD");
+    const date = dayjs();
+    eventsContext.events = [];
+    if (currentView.viewType === "MONTH") {
+      eventsContext.selectedStartDate = dayjs()
+        .set("date", 1)
+        .format("YYYY-MM-DD");
+      eventsContext.selectedEndDate = dayjs()
+        .set("date", 1)
+        .endOf("month")
+        .format("YYYY-MM-DD");
+      date.set("date", 1);
+    } else if (currentView.viewType === "WEEK") {
+      eventsContext.selectedStartDate = dayjs()
+        .startOf("week")
+        .format("YYYY-MM-DD");
+      eventsContext.selectedEndDate = dayjs()
+        .add(6, "day")
+        .format("YYYY-MM-DD");
+    }
+
     setCurrentView((prevView) => {
-      return { viewDate: dayjs(), viewType: prevView.viewType };
+      return { viewDate: date, viewType: prevView.viewType };
     });
   }
 
   const handleToggleClick = () => {
-    console.log(currentView.viewType);
+    eventsContext.events = [];
     const viewType = currentView.viewType === "MONTH" ? "WEEK" : "MONTH";
-    console.log("Sundera");
-    console.log(viewType);
+    if (viewType === "WEEK") {
+      eventsContext.selectedStartDate = currentView.viewDate
+        .startOf("week")
+        .format("YYYY-MM-DD");
+      eventsContext.selectedEndDate = currentView.viewDate
+        .add(6, "day")
+        .format("YYYY-MM-DD");
+    } else if (viewType === "MONTH") {
+      eventsContext.selectedStartDate = currentView.viewDate
+        .set("date", 1)
+        .format("YYYY-MM-DD");
+      eventsContext.selectedEndDate = currentView.viewDate
+        .endOf("month")
+        .format("YYYY-MM-DD");
+    }
     setCurrentView((prevView) => {
       return { viewDate: prevView.viewDate, viewType: viewType };
     });

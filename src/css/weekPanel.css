@@ -1,5 +1,5 @@
 .week-container {
-  height: 140%;
+  height: 1600px;
   width: 100%;
   grid-template-rows: 4% 96%;
   display: grid;
@@ -17,11 +17,30 @@
 
 .week-day-header p {
   text-align: center;
+  margin: 0;
+}
+
+.week-day-header.current {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.week-day-header.current P {
+  display: inline-block;
+  padding: 2px 7px;
+  border: 2px solid #3498db; /* Border color */
+  border-radius: 5px;
+  background-color: #f2f2f2; /* Background color */
+  font-size: 16px;
+  color: #09aee0; /* Text color */
+  font-family: Arial, sans-serif;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Optional: Box shadow */
 }
 
 .week-view-container {
   display: grid;
-  grid-template-columns: 4% auto;
+  grid-template-columns: 4% 96%;
 }
 
 .week-view-hours {
@@ -36,4 +55,9 @@
 
 .week-day-header {
   border: 1px solid #ccc;
+}
+
+.week-view-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
 }

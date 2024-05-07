@@ -21,14 +21,15 @@ export default function TextEditor({
         apiKey="yrts0vwgndyeh7evrtmrr652qrug4to4qd8cvub6wt1by4mw"
         init={{
           menubar: false,
-          plugins: "autolink link lists wordcount",
+          plugins: "link lists wordcount fullscreen",
           toolbar:
-            "bold italic underline insertLink bullist alignleft aligncenter alignright",
+            "alignleft aligncenter alignright underline bullist fullscreen",
           content_style: `
                 body {
                     background: #afdec9;
                 }
             `,
+          link_default_protocol: "https",
         }}
       />
     </div>

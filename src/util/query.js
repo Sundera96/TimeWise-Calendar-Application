@@ -144,6 +144,9 @@ export async function updateEvent(
 
   let data = await response.json();
   data = data[0];
+  if (!data) {
+    return events.concat([]);
+  }
   events = events.filter((item) => {
     return item.eventId !== data.eventId;
   });

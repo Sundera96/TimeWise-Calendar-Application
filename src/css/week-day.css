@@ -1,0 +1,44 @@
+.week-day {
+  border: 1px solid #ccc;
+  overflow: hidden;
+  max-width: 100%; /* Ensures the parent width does not change */
+  margin: 0;
+}
+
+.week-pill {
+  background-color: #ff9999;
+  color: black;
+  border-radius: 6px;
+  font-size: 11px;
+  cursor: pointer;
+  font-weight: bold;
+  overflow: hidden;
+  flex-shrink: 1; /* Allows pills to shrink to fit within the container */
+}
+
+.week-pill p {
+  margin: 0;
+  text-align: center;
+}
+
+.week-pills {
+  display: flex;
+}
+
+.week-pill.REMINDER {
+  background-color: #ffcc66;
+}
+
+.week-pill.MEETING {
+  background-color: #66cccc;
+}
+
+.week-pill.LINK {
+  background-color: #6699cc;
+}
+
+.week-pill:hover {
+  /* Your hover styles for elements with class starting with 'week-pill' inside week-pills */
+  background-color: #0056b3;
+  cursor: pointer; /* Optionally change cursor on hover */
+}

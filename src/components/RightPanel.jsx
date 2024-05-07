@@ -6,20 +6,6 @@ import dayjs from "dayjs";
 import EventModal from "./EventModal.jsx";
 import { updateEvent, fetchEvent } from "../util/query.js";
 import { useEffect } from "react";
-// const items = [
-//   {
-//     key: "MISSED",
-//     label: "MISSED",
-//   },
-//   {
-//     key: "CURRENT",
-//     label: "CURRENT",
-//   },
-//   {
-//     key: "COMPLETED",
-//     label: "COMPLETED",
-//   },
-// ];
 export default function RightPanel() {
   const [modalEvent, setModalEvent] = useState({
     title: "",

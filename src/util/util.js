@@ -93,3 +93,93 @@ export function getRecurrenceCount(dateTimeStr1, dateTimeStr2) {
     .set("minute", startDate.get("minute"));
   return endDate.diff(startDate, "day");
 }
+
+export function groupingEventsForDisplay(listOfEvents) {
+  console.log(listOfEvents);
+  listOfEvents.forEach((item) => {
+    if (item.eventType === "REMINDER") {
+      item["sort-start-dayjs"] = dayjs(item["remindDateTime"]);
+      item["sort-end-dayjs"] = dayjs(item["remindDateTime"]);
+    } else if (item.eventType === "MEETING") {
+      item["sort-start-dayjs"] = dayjs(item["startDateTime"]);
+      item["sort-end-dayjs"] = dayjs(item["endDateTime"]);
+    } else if (item.eventType === "TASK") {
+      item["sort-start-dayjs"] = dayjs(item["taskDate"]);
+      item["sort-end-dayjs"] = dayjs(item["taskDate"]);
+    } else {
+      item["sort-start-dayjs"] = dayjs(item["linkDateTime"]);
+      item["sort-end-dayjs"] = dayjs(item["linkDateTime"]);
+    }
+  });
+  listOfEvents.sort((item1, item2) => {
+    return item1["sort-start-dayjs"].diff(item2["sort-start-dayjs"]) === 0
+      ? item1["sort-end-dayjs"].diff(item2["sort-end-dayjs"])
+      : item1["sort-start-dayjs"].diff(item2["sort-start-dayjs"]);
+  });
+
+  const lowestPillPixelHeight = 16;
+  let currentPixel = 0;
+  let startPixel;
+  let endPixel;
+  const listOfDivs = [];
+  let listOfEventDivs = [];
+  let i = 0;
+  listOfEvents.forEach((event) => {
+    const currStartPixel = calculatePixel(event["sort-start-dayjs"]);
+    const currEndPixel =
+      calculatePixel(event["sort-end-dayjs"]) - currStartPixel <
+      lowestPillPixelHeight
+        ? currStartPixel + lowestPillPixelHeight
+        : calculatePixel(event["sort-end-dayjs"]);
+    if (!startPixel) {
+      startPixel = calculatePixel(event["sort-start-dayjs"]);
+      endPixel = calculatePixel(event["sort-end-dayjs"]);
+      if (endPixel - startPixel < 16) {
+        endPixel = startPixel + lowestPillPixelHeight;
+      }
+    } else if (
+      !(
+        (startPixel >= currStartPixel && startPixel < currEndPixel) ||
+        (endPixel > currStartPixel && endPixel < currEndPixel) ||
+        (currStartPixel >= startPixel && currStartPixel < endPixel) ||
+        (currEndPixel > startPixel && currEndPixel <= endPixel)
+      )
+    ) {
+      listOfDivs.push({
+        ["margin-top"]: startPixel - currentPixel,
+        ["height"]: endPixel - startPixel,
+        ["events-list"]: listOfEventDivs,
+      });
+      currentPixel = endPixel;
+      startPixel = currStartPixel;
+      endPixel = currEndPixel;
+      listOfEventDivs = [];
+    }
+    if (currStartPixel < startPixel) {
+      startPixel = currStartPixel;
+    }
+    if (currEndPixel > endPixel) {
+      endPixel = currEndPixel;
+    }
+    listOfEventDivs.push({
+      ...event,
+      ["margin-top"]: currStartPixel - startPixel,
+      ["height"]: currEndPixel - currStartPixel,
+    });
+  });
+
+  if (listOfEventDivs.length != 0) {
+    listOfDivs.push({
+      ["margin-top"]: startPixel - currentPixel,
+      ["height"]: endPixel - startPixel,
+      ["events-list"]: listOfEventDivs,
+    });
+  }
+  return listOfDivs;
+}
+
+function calculatePixel(date) {
+  const pixel = 1536;
+  const totalTimeMin = 24 * 60;
+  return ((date.hour() * 60 + date.minute()) * pixel) / totalTimeMin;
+}
