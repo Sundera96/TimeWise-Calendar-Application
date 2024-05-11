@@ -27,17 +27,8 @@ export function fetchEvents(startDate, endDate, setEventsState, token) {
     });
 }
 
-export function addEvent(
-  event,
-  token,
-  startDate,
-  endDate,
-  events,
-  setEventsState
-) {
+export async function addEvent(event, token, startDate, endDate) {
   const link = "http://localhost:8080/event/";
-  console.log("Add Event");
-  console.log(event);
   event = {
     ...event,
     ["selected-start-date"]: startDate,
@@ -76,30 +67,20 @@ export function addEvent(
     };
   }
   console.log(event);
-  fetch(link, {
+  const response = await fetch(link, {
     method: "POST",
     body: JSON.stringify(event),
     headers: {
       Authorization: `Bearer ${token}`,
     },
-  })
-    .then((response) => {
-      return response.json();
-    })
-    .then((data) => {
-      events = events.concat(data);
-      setEventsState(events);
-    });
+  });
+
+  const data = await response.json();
+  console.log(data);
+  return data;
 }
 
-export async function updateEvent(
-  event,
-  token,
-  startDate,
-  endDate,
-  link,
-  events
-) {
+export async function updateEvent(event, token, startDate, endDate, link) {
   event = {
     ...event,
     ["selected-start-date"]: startDate,
@@ -120,7 +101,6 @@ export async function updateEvent(
       ["recurrence-count"]: 1,
     };
   } else if (event["type-tag"] === "TASK") {
-    console.log(event["task-date"]);
     event = {
       ...event,
       ["task-date"]: event["task-date"],
@@ -132,7 +112,6 @@ export async function updateEvent(
         event["link-date-time"] || dayjs().format("YYYY-MM-DD HH:mm"),
     };
   }
-  console.log("Check Task update");
   console.log(event);
   const response = await fetch(link, {
     method: "POST",
@@ -145,28 +124,12 @@ export async function updateEvent(
   let data = await response.json();
   data = data[0];
   if (!data) {
-    return events.concat([]);
+    return null;
   }
-  events = events.filter((item) => {
-    return item.eventId !== data.eventId;
-  });
-  console.log("Events Query JS befre concat");
-  return events.concat(data);
-  // .then((response) => {
-  //   return response.json();
-  // })
-  // .then((data) => {
-  //   // eventValues[event["type-tag"].toLowerCase()] = eventValues[
-  //   //   event["type-tag"].toLowerCase()
-  //   // ].filter((event) => {
-  //   //   event.eventId !== data.eventId;
-  //   // });
-  //   // eventValues[event["type-tag"].toLowerCase()].push(data[0]);
-  //   events = events.filter((item) => {
-  //     item.eventId !== data.eventId;
-  //   });
-  //   return events.concat(data);
+  // events = events.filter((item) => {
+  //   return item.eventId !== data.eventId;
   // });
+  return data;
 }
 
 export async function getAllTopics(token, setTopicState) {
@@ -185,4 +148,17 @@ export async function getAllTopics(token, setTopicState) {
       }
       setTopicState(data);
     });
+}
+
+export async function getRightPanelData(date, token) {
+  const response = await fetch(
+    `http://localhost:8080/event/tasks/${date.format("YYYY-MM-DD")}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return await response.json();
 }

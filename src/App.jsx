@@ -1,18 +1,16 @@
 import { useEffect, useState } from "react";
-import CenterPanel from "./components/CenterPanel";
 import Header from "./components/Header";
-import LeftPanel from "./components/LeftPanel";
-import RightPanel from "./components/RightPanel";
 import "./css/container.css";
 import { EventsContext } from "./store/events-view-context";
 import SignUpOrLogin from "./components/SignUpOrLogin";
 import dayjs from "dayjs";
 import { validateToken } from "./util/userRegistration";
+import MainPanel from "./components/MainPanel";
 
 function App() {
-  const [events, setEvents] = useState([]);
   const [token, setToken] = useState("");
-  const [topics, setTopics] = useState(["DEFAULT"]);
+  const [events, setEvents] = useState([]);
+
   useEffect(() => {
     const localStorageToken = localStorage.getItem("timewise-token");
     async function validate() {
@@ -41,20 +39,14 @@ function App() {
             setToken: setToken,
             selectedStartDate: dayjs().set("date", 1).format("YYYY-MM-DD"),
             selectedEndDate: dayjs().endOf("month").format("YYYY-MM-DD"),
-            topics: topics,
-            setTopics: setTopics,
-            unfinishedTask: [],
-            routineTask: [],
+            topics: [],
+            setTopics: {},
+            newTasks: [],
+            setNewTasks: {},
           }}
         >
           {token === "" && <SignUpOrLogin />}
-          {token !== "" && (
-            <>
-              <LeftPanel />
-              <CenterPanel />
-              <RightPanel />
-            </>
-          )}
+          {!(token === "") && <MainPanel />}
         </EventsContext.Provider>
       </div>
     </>

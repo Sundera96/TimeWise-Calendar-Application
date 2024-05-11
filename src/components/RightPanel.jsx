@@ -1,29 +1,23 @@
 import "../css/rightPanel.css";
 import MyList from "./MyList";
-import { useContext, useState, useRef } from "react";
+import { useContext, useState, useRef, useEffect } from "react";
 import { EventsContext } from "../store/events-view-context.jsx";
 import dayjs from "dayjs";
 import EventModal from "./EventModal.jsx";
 import { updateEvent, fetchEvent } from "../util/query.js";
-import { useEffect } from "react";
-export default function RightPanel() {
+import ProgressBarPanel from "./ProgressbarPanel.jsx";
+export default function RightPanel({
+  todayDate,
+  rightPanelState,
+  setRightPanelState,
+}) {
+  console.log(rightPanelState);
+
   const [modalEvent, setModalEvent] = useState({
     title: "",
     topic: "",
   });
   const eventsContext = useContext(EventsContext);
-  const [eventObjs, setEventObjs] = useState({
-    unfinishedTask: [],
-    routineTask: [],
-  });
-  eventsContext.setRightPanelTask = setEventObjs;
-
-  useEffect(() => {
-    setEventObjs({
-      unfinishedTask: [],
-      routineTask: [],
-    });
-  }, []);
   const dialog = useRef();
   async function handleOnClickEventPill(link, caller) {
     if (!caller) {
@@ -37,19 +31,22 @@ export default function RightPanel() {
 
   async function handleSaveModal(events, link) {
     events.preventDefault();
-    const eventContextData = await updateEvent(
+    await updateEvent(
       modalEvent,
       eventsContext.token,
       eventsContext.selectedStartDate,
       eventsContext.selectedEndDate,
-      link,
-      eventsContext.events
+      link
     );
-    eventsContext.events = eventContextData;
+    eventsContext.setEvents(eventsContext.events.concat([]));
     dialog.current.close();
   }
 
-  async function handleCheckBox(isChecked, resourceLink) {
+  /**
+   *
+   * Need to complete this logic
+   */
+  async function handleCheckBox(isChecked, resourceLink, caller) {
     let taskExpiryDate;
     if (isChecked) {
       taskExpiryDate = dayjs().format("YYYY-MM-DD HH:mm");
@@ -58,38 +55,61 @@ export default function RightPanel() {
     }
     let data = await fetchEvent(resourceLink, eventsContext.token);
     data = { ...data, ["expiry-date-time"]: taskExpiryDate };
-    const eventContextData = await updateEvent(
+    await updateEvent(
       data,
       eventsContext.token,
       eventsContext.selectedStartDate,
       eventsContext.selectedEndDate,
-      data["update"].href,
-      eventsContext.events
+      data["update"].href
     );
-    eventsContext.events = eventContextData;
-    eventsContext.unfinishedTask = eventsContext.unfinishedTask.filter(
-      (task) => {
-        return task.eventId !== data.eventId;
-      }
-    );
-    setEventObjs({
-      unfinishedTask: eventsContext.unfinishedTask,
-      routineTask: eventObjs.routineTask,
-    });
+    if (isChecked && caller === "UNFINISHEDTASK") {
+      setRightPanelState((prevState) => {
+        return {
+          ...prevState,
+          ["unFinishedTask"]: prevState.unFinishedTask.filter((item) => {
+            return item.eventId !== data["event-id"];
+          }),
+        };
+      });
+    } else if (isChecked && caller === "CURRENTTASK") {
+      const { currentTaskProgress, remainingTaskProgress } =
+        rightPanelState.trackerProgress.reduce(
+          (accumulator, item) => {
+            if (item.seriesId === data["series-id"]) {
+              accumulator.currentTaskProgress.push(item);
+            } else {
+              accumulator.remainingTaskProgress.push(item);
+            }
+            return accumulator;
+          },
+          { currentTaskProgress: [], remainingTaskProgress: [] }
+        );
+      setRightPanelState((prevState) => {
+        return {
+          ...prevState,
+          ["currentTask"]: prevState.currentTask.filter((item) => {
+            return item.eventId !== data["event-id"];
+          }),
+          ["trackerProgress"]: remainingTaskProgress.concat({
+            ...currentTaskProgress[0],
+            ["completedTask"]: currentTaskProgress[0].completedTask + 1,
+          }),
+        };
+      });
+    }
   }
 
   function handleOnClose() {
     dialog.current.close();
   }
 
-  function getCurrentTaskDataFromContext() {
-    const data = eventsContext.events.filter((item) => {
-      return (
-        item.eventType === "TASK" &&
-        item.taskDate === dayjs().format("YYYY-MM-DD")
-      );
-    });
-    return data;
+  // Make this static
+  function getCurrentTask() {
+    return rightPanelState.currentTask;
+  }
+
+  function getCurrentUnfinishedTask() {
+    return rightPanelState.unFinishedTask;
   }
 
   return (
@@ -103,21 +123,22 @@ export default function RightPanel() {
       />
       <MyList
         title={"CURRENT TASK"}
-        data={getCurrentTaskDataFromContext()}
+        caller={"CURRENTTASK"}
+        data={getCurrentTask()}
         handleOnClickEventPill={handleOnClickEventPill}
         handleCheckBox={handleCheckBox}
       ></MyList>
       <MyList
         title={"UNFINISHED TASK"}
-        data={eventObjs.unfinishedTask}
+        caller={"UNFINISHEDTASK"}
+        data={getCurrentUnfinishedTask()}
         handleOnClickEventPill={handleOnClickEventPill}
         handleCheckBox={handleCheckBox}
       ></MyList>
-      <MyList
-        title={"ROUTINE TRACKER"}
-        data={eventObjs.routineTask}
-        handleOnClickEventPill={handleOnClickEventPill}
-      ></MyList>
+      <ProgressBarPanel
+        title={"Progress"}
+        data={rightPanelState.trackerProgress}
+      ></ProgressBarPanel>
     </div>
   );
 }

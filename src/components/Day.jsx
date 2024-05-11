@@ -23,7 +23,6 @@ export default function Day({
   async function handleOnClickEventPill(link, caller) {
     if (!caller) {
       const data = await fetchEvent(link, eventContext.token);
-      console.log(data);
       setModalEvent(data);
       dialog.current.showModal();
     } else {
@@ -33,16 +32,53 @@ export default function Day({
 
   async function handleSaveModal(events, link) {
     events.preventDefault();
-    const eventContextData = await updateEvent(
+    const data = await updateEvent(
       modalEvent,
       eventContext.token,
       eventContext.selectedStartDate,
       eventContext.selectedEndDate,
-      link,
-      eventContext.events
+      link
     );
-
-    eventContext.events = eventContextData;
+    if (data != null && data.eventType === "TASK") {
+      console.log("is it triggering1");
+      const date = dayjs().startOf("day");
+      if (
+        data.expiredDateTime === null &&
+        date.diff(dayjs(data.taskDate, "YYYY-MM-DD")) > 0
+      ) {
+        console.log("is it triggering2");
+        eventContext.setRightPanelState((prevState) => {
+          return {
+            ...prevState,
+            ["currentTask"]: prevState.currentTask.filter((item) => {
+              return item.eventId !== data.eventId;
+            }),
+            ["unFinishedTask"]: prevState.unFinishedTask
+              .filter((item) => {
+                return item.eventId !== data.eventId;
+              })
+              .concat(data),
+          };
+        });
+      } else if (
+        data.expiredDateTime === null &&
+        date.diff(dayjs(data.taskDate, "YYYY-MM-DD")) === 0
+      ) {
+        eventContext.setRightPanelState((prevState) => {
+          return {
+            ...prevState,
+            ["currentTask"]: prevState.currentTask
+              .filter((item) => {
+                return item.eventId !== data.eventId;
+              })
+              .concat(data),
+            ["unFinishedTask"]: prevState.unFinishedTask.filter((item) => {
+              return item.eventId !== data.eventId;
+            }),
+          };
+        });
+      }
+    }
     monthDateState.setCurrentDate({
       viewDate: dayjs(monthDateState.currentDate),
       viewType: "MONTH",

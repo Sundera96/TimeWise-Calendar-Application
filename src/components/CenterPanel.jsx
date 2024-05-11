@@ -8,34 +8,13 @@ import { fetchEvents } from "../util/query.js";
 import "../css/centerPanel.css";
 import { Input, Button, Form } from "antd";
 import dayjs from "dayjs";
-export default function CenterPanel() {
-  const [currentView, setCurrentView] = useState({
-    viewDate: dayjs().set("date", 1),
-    viewType: "MONTH",
-  });
-  const [todayDate, setTodayDate] = useState(dayjs());
+export default function CenterPanel({
+  currentView,
+  setCurrentView,
+  todayDate,
+}) {
   const eventsContext = useContext(EventsContext);
   const formRef = useRef();
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      const now = dayjs();
-      if (now.get("date") !== todayDate.get("date")) {
-        setTodayDate(now);
-      }
-    }, 60000); // Check every minute for current date
-    return () => clearInterval(intervalId); // Clear interval on component unmount
-  }, []);
-
-  useEffect(() => {
-    fetchEvents(
-      eventsContext.selectedStartDate,
-      eventsContext.selectedEndDate,
-      eventsContext.setEvents,
-      eventsContext.token
-    );
-  }, [currentView]);
-
   function handleClickOfDayCell(date) {
     eventsContext.selectedStartDate = currentView.viewDate
       .startOf("week")
@@ -51,6 +30,7 @@ export default function CenterPanel() {
   }
 
   function handleNextClick() {
+    eventsContext.events = [];
     if (currentView.viewType === "MONTH") {
       setCurrentView((prevView) => {
         const selectedDate = prevView.viewDate.add(1, "month").set("date", 1);
@@ -58,7 +38,6 @@ export default function CenterPanel() {
         eventsContext.selectedEndDate = selectedDate
           .endOf("month")
           .format("YYYY-MM-DD");
-        eventsContext.events = [];
         return { viewDate: selectedDate, viewType: prevView.viewType };
       });
     } else {
@@ -77,6 +56,7 @@ export default function CenterPanel() {
   }
 
   function handlePrevClick() {
+    eventsContext.events = [];
     if (currentView.viewType === "MONTH") {
       setCurrentView((prevView) => {
         const selectedDate = prevView.viewDate
@@ -86,7 +66,6 @@ export default function CenterPanel() {
         eventsContext.selectedEndDate = selectedDate
           .endOf("month")
           .format("YYYY-MM-DD");
-        eventsContext.events = [];
         return { viewDate: selectedDate, viewType: prevView.viewType };
       });
     } else {
@@ -98,7 +77,6 @@ export default function CenterPanel() {
         eventsContext.selectedEndDate = selectedDate
           .add(6, "day")
           .format("YYYY-MM-DD");
-        eventsContext.events = [];
         return { viewDate: selectedDate, viewType: prevView.viewType };
       });
     }
@@ -106,23 +84,18 @@ export default function CenterPanel() {
 
   function handleTodayClick() {
     const date = dayjs();
+    console.log(date);
     eventsContext.events = [];
     if (currentView.viewType === "MONTH") {
-      eventsContext.selectedStartDate = dayjs()
-        .set("date", 1)
+      eventsContext.selectedStartDate = date
+        .startOf("month")
         .format("YYYY-MM-DD");
-      eventsContext.selectedEndDate = dayjs()
-        .set("date", 1)
-        .endOf("month")
-        .format("YYYY-MM-DD");
-      date.set("date", 1);
+      eventsContext.selectedEndDate = date.endOf("month").format("YYYY-MM-DD");
     } else if (currentView.viewType === "WEEK") {
-      eventsContext.selectedStartDate = dayjs()
+      eventsContext.selectedStartDate = date
         .startOf("week")
         .format("YYYY-MM-DD");
-      eventsContext.selectedEndDate = dayjs()
-        .add(6, "day")
-        .format("YYYY-MM-DD");
+      eventsContext.selectedEndDate = date.add(6, "day").format("YYYY-MM-DD");
     }
 
     setCurrentView((prevView) => {

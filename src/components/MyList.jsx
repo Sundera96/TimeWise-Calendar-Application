@@ -2,12 +2,11 @@ import { List, Checkbox } from "antd";
 import dayjs from "dayjs";
 export default function MyList({
   title,
+  caller,
   data,
   handleOnClickEventPill,
   handleCheckBox,
 }) {
-  console.log("Mu List");
-  console.log(data);
   return (
     <>
       <p style={{ textAlign: "center" }}>{title}</p>
@@ -35,7 +34,7 @@ export default function MyList({
                 <Checkbox
                   checked={dayjs(item.expiredDateTime).isValid()}
                   onChange={(e) =>
-                    handleCheckBox(e.target.checked, item.links[0].href)
+                    handleCheckBox(e.target.checked, item.links[0].href, caller)
                   }
                 />
               </div>

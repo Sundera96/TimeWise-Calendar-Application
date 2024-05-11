@@ -21,10 +21,6 @@ export default function EventPill({ event, onClick }) {
     );
   }
 
-  console.log("Event Pill");
-  console.log(event.eventType);
-  console.log(event.eventDateTime);
-
   const openNotification = () => {
     notification.info({
       message: `Event ${event.eventType} Notification`,
@@ -47,33 +43,6 @@ export default function EventPill({ event, onClick }) {
             new Audio(notifySound).play();
             openNotification();
             clearInterval(interval);
-          }
-        }, 30000);
-        return () => clearInterval(interval);
-      }
-    }, [event]);
-  } else if (event.eventType === "TASK") {
-    useEffect(() => {
-      const date = dayjs();
-      if (
-        !event.expiredDateTime &&
-        date.format("YYYY-MM-DD") > eventDateTime.format("YYYY-MM-DD")
-      ) {
-        eventContext.setRightPanelTask({
-          unfinishedTask: eventContext.unfinishedTask.concat(event),
-          routineTask: eventContext.routineTask,
-        });
-      } else if (!event.expiredDateTime) {
-        const interval = setInterval(() => {
-          console.log("iss checkig");
-          if (date.format("YYYY-MM-DD") > eventDateTime.format("YYYY-MM-DD")) {
-            new Audio(notifySound).play();
-            openNotification();
-            clearInterval(interval);
-            eventContext.setRightPanelTask({
-              unfinishedTask: eventContext.unfinishedTask.concat(event),
-              routineTask: eventContext.routineTask,
-            });
           }
         }, 30000);
         return () => clearInterval(interval);
