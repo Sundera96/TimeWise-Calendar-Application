@@ -1,20 +1,72 @@
-# TimeWise - Calendar Application
+# TimeWise
 
-## Security Note
+![TimeWise Logo](https://github.com/Sundera96/TimeWise-Frontend/blob/d7c84f7828508d4baaccacdff09177aada81da30/Screenshot%20from%202024-05-10%2021-02-34.png)
 
-**Important**: Kindly refrain from giving personal information.
+TimeWise is a modern calendar application designed for seamless event management and scheduling. Built using Spring Boot for the backend and React for the frontend, TimeWise provides a user-friendly interface and robust functionality, deployed on Google Cloud for scalability and reliability.
 
-### Live Application
+## Features
 
-You can access the live version of the TimeWise application [here](https://react-ky2xfd5qna-uc.a.run.app/).
+- **Event Management**: Create, view, update, and delete events.
+- **User Authentication**: Secure login and registration using JWT.
+- **Responsive UI**
 
-![Application Screenshot](https://github.com/Sundera96/TimeWise-Frontend/blob/d7c84f7828508d4baaccacdff09177aada81da30/Screenshot%20from%202024-05-10%2021-02-34.png)
+## Architecture
 
-![Application Screenshot](https://github.com/Sundera96/TimeWise-Frontend/blob/f2c512519863820411ebb81041e838060991729f/Screenshot%20from%202024-05-10%2021-03-31.png)
+TimeWise consists of three main backend services, and a frontend:
 
-The application backend uses 3 services:
-- **Event Service**
-- **Security Service (Spring Security)**
-- **Gateway Service (Spring Cloud Gateway)**
+### Backend Services
 
-All services are developed using Spring Boot and deployed as containers in Google Cloud. The frontend of the application uses React and Vite for deployment, also containerized and hosted in Google Cloud.
+1. **Event Service**
+   - **Purpose**: Manages events including creation, updating, and deletion.
+   - **Tech**: Spring Boot, REST APIs, PostgreSQL.
+   - **Deployment**: Docker, Google Cloud.
+
+2. **Security Service**
+   - **Purpose**: Handles user authentication and authorization.
+   - **Tech**: Spring Security, JWT, PostgreSQL.
+   - **Deployment**: Docker, Google Cloud.
+
+3. **Gateway Service**
+   - **Purpose**: Routes requests to the appropriate services.
+   - **Tech**: Spring Cloud Gateway.
+   - **Deployment**: Docker, Google Cloud.
+
+### Frontend
+
+- **Tech**: React, Vite.
+- **Deployment**: Docker, Google Cloud.
+
+## Live Demo
+
+Explore the live version of TimeWise [here](https://react-ky2xfd5qna-uc.a.run.app/).
+
+> **Note**: Initial load may take a few seconds as the default nodes to be reserved are set to zero.
+
+## Screenshots
+
+### Month View
+
+![Main Interface](https://github.com/Sundera96/TimeWise-Frontend/blob/d7c84f7828508d4baaccacdff09177aada81da30/Screenshot%20from%202024-05-10%2021-02-34.png)
+
+### Week View
+
+![Event Creation](https://github.com/Sundera96/TimeWise-Frontend/blob/f2c512519863820411ebb81041e838060991729f/Screenshot%20from%202024-05-10%2021-03-31.png)
+
+## Technologies Used
+
+### Backend
+
+- **Spring Boot**: Java-based framework for creating RESTful services.
+- **Spring Security**: For authentication and authorization.
+- **Spring Cloud Gateway**: For routing and load balancing.
+- **JWT**: For secure token-based authentication.
+- **Docker**: For containerization.
+
+### Frontend
+
+- **React**: For building the user interface.
+- **Vite**: For frontend tooling and build.
+
+### Deployment
+
+- **Google Cloud**: For hosting both backend and frontend services.
