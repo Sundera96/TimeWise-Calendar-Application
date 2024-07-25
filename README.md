@@ -36,12 +36,6 @@ TimeWise consists of three main backend services, and a frontend:
 - **Tech**: React, Vite.
 - **Deployment**: Docker, Google Cloud.
 
-## Live Demo
-
-Explore the live version of TimeWise [here](https://react-ky2xfd5qna-uc.a.run.app/).
-
-> **Note**: Initial load may take a few seconds as the default nodes to be reserved are set to zero.
-
 ## Screenshots
 
 ### Month View
